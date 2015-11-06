@@ -36,11 +36,11 @@ build/**
 .idea/**
 import-summary.txt
 
+captures
 *.pydevproject
 .project
 .metadata
 .gradle
-build/**
 bin/**
 tmp/**
 tmp/**/*
