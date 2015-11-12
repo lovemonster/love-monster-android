@@ -7,7 +7,7 @@ application. It makes it easy to see recent loves, send love, and view
 activity data for individual users. It is a fast, convenient, and fun
 way to show appreciation to your friends, family, or co-workers.
 
-Time Spent: **0** hours.
+Time Spent: **1** cumulative developer hours.
 
 ## User Stories
 
