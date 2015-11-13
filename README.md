@@ -9,6 +9,9 @@ way to show appreciation to your friends, family, or co-workers.
 
 Time Spent: **1** cumulative developer hours.
 
+## Wireframes
+View [this image](https://raw.githubusercontent.com/lovemonster/love-monster-android/master/img/wireframe_sketches.jpg) for the wireframes.
+
 ## User Stories
 
 The following **required** functionality is completed:
