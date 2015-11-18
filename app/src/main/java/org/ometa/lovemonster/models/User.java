@@ -3,8 +3,11 @@ package org.ometa.lovemonster.models;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Represents a User which can send and receive loves.
+ * Represents a User which can send and receive {@link Love}s.
  */
 public class User {
 
@@ -27,6 +30,20 @@ public class User {
     public String username;
 
     /**
+     * The {@link Love}s this user has received.  May be empty, but cannot be null.
+     * This field cannot be reassigned, but the contents may be modified freely by any thread (not threadsafe).
+     */
+    @NonNull
+    public final List<Love> receivedLoves;
+
+    /**
+     * The {@link Love}s this user has sent.  May be empty, but cannot be null.
+     * This field cannot be reassigned, but the contents may be modified freely by any thread (not threadsafe).
+     */
+    @NonNull
+    public final List<Love> sentLoves;
+
+    /**
      * Instantiates a {@code User} instance with the minimum required fields.
      *
      * @param email
@@ -47,5 +64,7 @@ public class User {
 
         this.email = email;
         this.username = username;
+        this.receivedLoves = new ArrayList<>();
+        this.sentLoves = new ArrayList<>();
     }
 }

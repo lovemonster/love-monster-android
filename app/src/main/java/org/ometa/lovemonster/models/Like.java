@@ -3,7 +3,7 @@ package org.ometa.lovemonster.models;
 import android.support.annotation.NonNull;
 
 /**
- * Represents a Like on a love.
+ * Represents a Like on a {@link Love}.
  */
 public class Like {
 
