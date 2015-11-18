@@ -42,4 +42,8 @@ public class LovesListFragment extends Fragment {
         // etFoo = (EditText) view.findViewById(R.id.etFoo);
         return view;
     }
+
+    public void addLove(Love love) {
+        lovesArrayAdapter.add(love);
+    }
 }
