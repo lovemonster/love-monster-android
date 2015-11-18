@@ -18,13 +18,42 @@ import java.util.List;
  * Created by bschmeckpeper on 11/18/15.
  */
 public class LoveArrayAdapter extends ArrayAdapter<Love> {
+
+
+    class VisibilityToggler implements View.OnClickListener {
+        View toToggle;
+
+        public VisibilityToggler(View toToggle) {
+            this.toToggle = toToggle;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (toToggle.getVisibility() == View.VISIBLE) {
+                toToggle.setVisibility(View.GONE);
+            } else {
+                toToggle.setVisibility(View.VISIBLE);
+            }
+        }
+    }
     class ViewHolder {
+
         public ImageView ivSenderImage, ivRecipientImage;
-        public TextView tvSenderName, tvRecipientName;
+        public TextView tvSenderName, tvRecipientName, tvReason, tvEllipsis, tvMessage;
 
         public void populate(Love love) {
             tvSenderName.setText(displayNameFor(love.lover));
             tvRecipientName.setText(displayNameFor(love.lovee));
+            tvReason.setText(love.reason);
+            if (love.hasMessage()) {
+                tvEllipsis.setVisibility(View.VISIBLE);
+                tvMessage.setText(love.message);
+            } else {
+                tvEllipsis.setVisibility(View.GONE);
+                tvMessage.setText("");
+            }
+
+            //tvMessage.setVisibility(View.GONE);
         }
 
         private String displayNameFor(User user) {
@@ -55,11 +84,15 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
     private View inflateView(ViewGroup parent) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.love_list_item, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder();
+        final ViewHolder viewHolder = new ViewHolder();
         viewHolder.ivRecipientImage = (ImageView) view.findViewById(R.id.ivRecipientImage);
         viewHolder.ivSenderImage = (ImageView) view.findViewById(R.id.ivSenderImage);
         viewHolder.tvRecipientName = (TextView) view.findViewById(R.id.tvRecipientName);
         viewHolder.tvSenderName = (TextView) view.findViewById(R.id.tvSenderName);
+        viewHolder.tvReason = (TextView) view.findViewById(R.id.tvReason);
+        viewHolder.tvEllipsis = (TextView) view.findViewById(R.id.tvElipsis);
+        viewHolder.tvMessage = (TextView) view.findViewById(R.id.tvMessage);
+        viewHolder.tvEllipsis.setOnClickListener(new VisibilityToggler(viewHolder.tvMessage));
 
         view.setTag(viewHolder);
 

@@ -50,4 +50,42 @@
         android:layout_toRightOf="@+id/ivRecipientImage"
         android:layout_toEndOf="@+id/ivRecipientImage" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Reason"
+        android:id="@+id/tvReason"
+        android:layout_below="@+id/ivSenderImage"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/tvElipsis"
+        android:layout_toStartOf="@+id/tvElipsis" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="..."
+        android:id="@+id/tvElipsis"
+        android:layout_below="@+id/ivRecipientImage"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="invisible" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Message"
+        android:id="@+id/tvMessage"
+        android:layout_below="@+id/tvReason"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"
+        />
+
+
 </RelativeLayout>

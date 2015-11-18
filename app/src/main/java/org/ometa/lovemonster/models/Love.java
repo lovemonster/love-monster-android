@@ -79,4 +79,6 @@ public class Love {
         this.isPrivate = false;
         this.likes = new ArrayList<>();
     }
+
+    public boolean hasMessage() { return message != null; }
 }
