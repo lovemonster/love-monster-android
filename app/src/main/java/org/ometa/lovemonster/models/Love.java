@@ -30,13 +30,13 @@ public class Love {
     public boolean isPrivate;
 
     /**
-     * The user who sent this love.  Required field.
+     * The {@link User} who sent this love.  Required field.
      */
     @NonNull
     public User lover;
 
     /**
-     * The user who received this love.  Required field.
+     * The {@link User} who received this love.  Required field.
      */
     @NonNull
     public User lovee;

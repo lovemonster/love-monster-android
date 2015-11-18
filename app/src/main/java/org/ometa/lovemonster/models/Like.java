@@ -8,13 +8,13 @@ import android.support.annotation.NonNull;
 public class Like {
 
     /**
-     * The user who liked the love. Required field.
+     * The {@link User} who liked the love. Required field.
      */
     @NonNull
     public User liker;
 
     /**
-     * The love which was liked. Required field.
+     * The {@link Love} which was liked. Required field.
      */
     @NonNull
     public Love love;
