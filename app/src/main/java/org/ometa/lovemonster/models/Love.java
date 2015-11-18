@@ -17,7 +17,7 @@ public class Love {
     public String reason;
 
     /**
-     * An optional personalized message from the sender.  Optional field.
+     * An optional personalized message from the lover.  Optional field.
      */
     @Nullable
     public String message;
@@ -33,13 +33,13 @@ public class Love {
      * The user who sent this love.  Required field.
      */
     @NonNull
-    public User sender;
+    public User lover;
 
     /**
      * The user who received this love.  Required field.
      */
     @NonNull
-    public User receiver;
+    public User lovee;
 
     /**
      * The {@link Like}s this love has received. May be empty, but cannot be null.
@@ -53,29 +53,29 @@ public class Love {
      *
      *  @param reason
      *      the reason for why this love was sent
-     * @param sender
+     * @param lover
      *      the {@link User} sending the love
-     * @param receiver
+     * @param lovee
      *      the {@link User} receiving the love
      * @throws IllegalArgumentException
-     *      if the specified reason, sender, or receiver are {@code null}
+     *      if the specified reason, lover, or lovee are {@code null}
      */
-    public Love(@NonNull final String reason, @NonNull final User sender, @NonNull final User receiver) throws IllegalArgumentException {
+    public Love(@NonNull final String reason, @NonNull final User lover, @NonNull final User lovee) throws IllegalArgumentException {
         if (reason == null) {
             throw new IllegalArgumentException("argument `reason` cannot be null");
         }
 
-        if (sender == null) {
-            throw new IllegalArgumentException("argument `sender` cannot be null");
+        if (lover == null) {
+            throw new IllegalArgumentException("argument `lover` cannot be null");
         }
 
-        if (receiver == null) {
-            throw new IllegalArgumentException("argument `receiver` cannot be null");
+        if (lovee == null) {
+            throw new IllegalArgumentException("argument `lovee` cannot be null");
         }
 
         this.reason = reason;
-        this.sender = sender;
-        this.receiver = receiver;
+        this.lover = lover;
+        this.lovee = lovee;
         this.isPrivate = false;
         this.likes = new ArrayList<>();
     }
