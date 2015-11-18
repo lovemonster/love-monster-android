@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:id="@+id/ivSenderImage"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Sender"
+        android:id="@+id/tvSenderName"
+        android:layout_alignBottom="@+id/ivSenderImage"
+        android:layout_toRightOf="@+id/ivSenderImage"
+        android:layout_toEndOf="@+id/ivSenderImage" />
+
+
+    <ImageView
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:id="@+id/ivHeart"
+        android:src="@drawable/heart"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/tvSenderName"
+        android:layout_toEndOf="@+id/tvSenderName" />
+
+    <ImageView
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:id="@+id/ivRecipientImage"
+        android:src="@mipmap/ic_launcher"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/ivHeart"
+        android:layout_toEndOf="@+id/ivHeart" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Recipient"
+        android:id="@+id/tvRecipientName"
+        android:layout_alignBottom="@+id/tvSenderName"
+        android:layout_toRightOf="@+id/ivRecipientImage"
+        android:layout_toEndOf="@+id/ivRecipientImage" />
+
+</RelativeLayout>
