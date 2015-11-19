@@ -20,7 +20,7 @@ import java.util.List;
 public class LoveArrayAdapter extends ArrayAdapter<Love> {
 
 
-    class VisibilityToggler implements View.OnClickListener {
+    static class VisibilityToggler implements View.OnClickListener {
         View toToggle;
 
         public VisibilityToggler(View toToggle) {
@@ -36,7 +36,7 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
             }
         }
     }
-    class ViewHolder {
+    static class ViewHolder {
 
         public ImageView ivSenderImage, ivRecipientImage;
         public TextView tvSenderName, tvRecipientName, tvReason, tvEllipsis, tvMessage;
