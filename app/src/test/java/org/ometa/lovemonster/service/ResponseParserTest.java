@@ -59,6 +59,7 @@ public class ResponseParserTest {
         assertEquals("should set the reason", "organizing all the move-related stuff", fullyFilledOutLove.reason);
         assertEquals("should set the message", "this is a fake message", fullyFilledOutLove.message);
         assertTrue("should be a private message", fullyFilledOutLove.isPrivate);
+        assertEquals("should set created at", Fixtures.getDatetime(2015, 11, 18, 15, 55, 46), fullyFilledOutLove.createdAt);
         assertEquals("should set lovee email", "jjenkins@groupon.com", fullyFilledOutLove.lovee.email);
         assertEquals("should set lovee name", "Jonathan Jenkins", fullyFilledOutLove.lovee.name);
         assertEquals("should set lovee username", "jjenkins", fullyFilledOutLove.lovee.username);
@@ -70,6 +71,7 @@ public class ResponseParserTest {
         assertEquals("should set the reason", "New Yooooooooooooork", minimallyFilledOutLove.reason);
         assertNull("should set the message to null when missing", minimallyFilledOutLove.message);
         assertFalse("should not be a private message", minimallyFilledOutLove.isPrivate);
+        assertEquals("should set created at", Fixtures.getDatetime(2015, 11, 13, 15, 17, 2), minimallyFilledOutLove.createdAt);
         assertEquals("should set lovee email", "aderly@groupon.com", minimallyFilledOutLove.lovee.email);
         assertNull("should set lovee nam to null when missinge", minimallyFilledOutLove.lovee.name);
         assertEquals("should set lovee username", "aderly", minimallyFilledOutLove.lovee.username);

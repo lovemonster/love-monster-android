@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Utility class which loads json fixture files and returns json objects.
@@ -47,5 +49,32 @@ public class Fixtures {
         } catch (final IOException|JSONException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Creates a {@link Calendar} in UTC for the specified date and time.
+     * @param year
+     *      the year for the date
+     * @param month
+     *      the month for the date
+     * @param dayOfMonth
+     *      the dayOfMonth of the month for the date
+     * @param hour
+     *      the hour for the time
+     * @param minute
+     *      the minute for the time
+     * @param second
+     *      the second for the time
+     * @return
+     *      the datetime
+     */
+    public static Calendar getDatetime(final int year, final int month, final int dayOfMonth, final int hour, final int minute, final int second) {
+        final Calendar datetime = Calendar.getInstance();
+
+        datetime.clear();
+        datetime.setTimeZone(TimeZone.getTimeZone("UTC"));
+        datetime.set(year, month - 1, dayOfMonth, hour, minute, second);
+
+        return datetime;
     }
 }

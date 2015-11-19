@@ -8,12 +8,32 @@ import org.ometa.lovemonster.models.Love;
 import org.ometa.lovemonster.models.User;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+
+import cz.msebera.android.httpclient.client.utils.DateUtils;
 
 /**
  * Parses responses from the server into model objects.
  */
 class ResponseParser {
+
+    /**
+     * The date format for iso8601.
+     *
+     * **N.B.**
+     *      Due to a bug in java, the date format doesn't handle "Z" as a timezone offset.
+     *      Instead of implementing complex logic around this, simply ignore the timezone and force
+     *      it to UTC.
+     */
+    private static final String[] ISO8601 = new String[]{"yyyy-MM-dd'T'HH:mm:ss"};
+
+    /**
+     * UTC timezone.
+     */
+    private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     /**
      * Parses a list of {@link Love} objects from a json response payload. May return an empty list,
@@ -74,7 +94,12 @@ class ResponseParser {
             return null;
         }
 
-        final Love love = new Love(reason, lover, lovee);
+        final Calendar createdAt = parseDatetime(loveJson.optString("created_at"));
+        if (createdAt == null) {
+            return null;
+        }
+
+        final Love love = new Love(reason, lover, lovee, createdAt);
 
         love.message = loveJson.optString("message", null);
         love.isPrivate = loveJson.optBoolean("private_message", false);
@@ -112,6 +137,34 @@ class ResponseParser {
         user.name = userJson.optString("name", null);
 
         return user;
+    }
+
+    /**
+     * Parses a datetime string into a {@link Calendar} object. Will return null if the date cannot
+     * be parsed. Null-safe (will return null).
+     *
+     * @param datetime
+     *      the datetime to parse
+     * @return
+     *      the parsed {@link Calendar}, or null if it cannot be parsed.
+     */
+    private Calendar parseDatetime(@Nullable final String datetime) {
+        if (datetime == null) {
+            return null;
+        }
+
+        final Date parsedDate = DateUtils.parseDate(datetime, ISO8601);
+        if (parsedDate == null) {
+            return null;
+        }
+
+        final Calendar calendar = Calendar.getInstance();
+
+        calendar.clear();
+        calendar.setTimeZone(UTC);
+        calendar.setTime(parsedDate);
+
+        return calendar;
     }
 
 }
