@@ -80,5 +80,16 @@ public class Love {
         this.likes = new ArrayList<>();
     }
 
-    public boolean hasMessage() { return message != null; }
+    /**
+     * Checks whether the {@code Love} has a non-null, non-blank message.
+     *
+     * @return true if the message is not null and not all spaces
+     */
+    public boolean hasMessage() {
+        if (message == null) {
+            return false;
+        }
+
+        return message.replaceAll(" ", "") != "";
+    }
 }
