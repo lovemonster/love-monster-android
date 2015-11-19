@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -49,6 +50,12 @@ public class Love {
     public final List<Like> likes;
 
     /**
+     * The timestamp for when this love was created.  Required field.
+     */
+    @NonNull
+    public final Calendar createdAt;
+
+    /**
      * Instantiates a {@code Love} instance with the minimum required fields.
      *
      *  @param reason
@@ -58,9 +65,9 @@ public class Love {
      * @param lovee
      *      the {@link User} receiving the love
      * @throws IllegalArgumentException
-     *      if the specified reason, lover, or lovee are {@code null}
+     *      if the specified reason, lover, lovee, or createdAt are {@code null}
      */
-    public Love(@NonNull final String reason, @NonNull final User lover, @NonNull final User lovee) throws IllegalArgumentException {
+    public Love(@NonNull final String reason, @NonNull final User lover, @NonNull final User lovee, @NonNull final Calendar createdAt) throws IllegalArgumentException {
         if (reason == null) {
             throw new IllegalArgumentException("argument `reason` cannot be null");
         }
@@ -73,9 +80,14 @@ public class Love {
             throw new IllegalArgumentException("argument `lovee` cannot be null");
         }
 
+        if (createdAt == null) {
+            throw new IllegalArgumentException("argument `createdAt` cannot be null");
+        }
+
         this.reason = reason;
         this.lover = lover;
         this.lovee = lovee;
+        this.createdAt = createdAt;
         this.isPrivate = false;
         this.likes = new ArrayList<>();
     }
