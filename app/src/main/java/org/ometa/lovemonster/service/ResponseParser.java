@@ -10,9 +10,12 @@ import org.ometa.lovemonster.models.User;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
+import cz.msebera.android.httpclient.annotation.NotThreadSafe;
 import cz.msebera.android.httpclient.client.utils.DateUtils;
 
 /**
@@ -34,6 +37,13 @@ class ResponseParser {
      * UTC timezone.
      */
     private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
+
+    /**
+     * Internal cache used to reuse {@link User} objects to reduce memory overhead and reduce parse time.
+     * **N.B.** This is not made synchronized to help with performance, since it is unlikely to be
+     * accessed by multiple threads concurrently.
+     */
+    private static final Map<String, User> userCache = new EntityCache<>(25);
 
     /**
      * Parses a list of {@link Love} objects from a json response payload. May return an empty list,
@@ -127,14 +137,21 @@ class ResponseParser {
             return null;
         }
 
+        User user = userCache.get(email);
+        if (user != null) {
+            return user;
+        }
+
         final String username = userJson.optString("username", null);
         if (username == null) {
             return null;
         }
 
-        final User user = new User(email, username);
+        user = new User(email, username);
 
         user.name = userJson.optString("name", null);
+
+        userCache.put(email, user);
 
         return user;
     }
@@ -167,4 +184,27 @@ class ResponseParser {
         return calendar;
     }
 
+    /**
+     * Provides lightweight caching of entities and automatically evicts the least recently used
+     * entity once the cache size is exceeded.
+     *
+     * This class itself is not threadsafe, and is intended to be wrapped in
+     * {@link java.util.Collections#synchronizedMap(Map)} if it will be modified by multiple threads.
+     *
+     * @param <T>
+     *     the entity type
+     */
+    @NotThreadSafe
+    private static class EntityCache<T> extends LinkedHashMap<String, T> {
+        private final int maxCacheSize;
+
+        public EntityCache(final int maxCacheSize) {
+            super(16, 0.75f, true);
+            this.maxCacheSize = maxCacheSize;
+        }
+
+        protected boolean removeEldestEntry(final Map.Entry<String, T> eldest) {
+            return size() >= maxCacheSize;
+        }
+    }
 }

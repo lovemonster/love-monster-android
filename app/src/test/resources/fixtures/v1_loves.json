@@ -348,7 +348,7 @@
       "created_at": "2015-11-13T18:48:23Z",
       "user_to": {
         "email": "qnouffert@groupon.com",
-        "name": "Quentin Nouffert",
+        "name": null,
         "username": "qnouffert"
       },
       "user_from": {
@@ -399,7 +399,7 @@
       "created_at": "2015-11-13T15:17:26Z",
       "user_to": {
         "email": "qnouffert@groupon.com",
-        "name": "Quentin Nouffert",
+        "name": null,
         "username": "qnouffert"
       },
       "user_from": {
