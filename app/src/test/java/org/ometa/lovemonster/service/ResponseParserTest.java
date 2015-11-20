@@ -25,7 +25,7 @@ public class ResponseParserTest {
     }
 
     @Test
-    public void testParsesLoveList_Null_ReturnsEmptyList() {
+    public void testParseLoveList_Null_ReturnsEmptyList() {
         final List<Love> loves = responseParser.parseLoveList(null);
 
         assertNotNull("loves should not be null", loves);
@@ -33,7 +33,7 @@ public class ResponseParserTest {
     }
 
     @Test
-    public void testParsesLoveList_NoDataSection_ReturnsEmptyList() throws JSONException {
+    public void testParseLoveList_NoDataSection_ReturnsEmptyList() throws JSONException {
         final List<Love> loves = responseParser.parseLoveList(new JSONObject("{}"));
 
         assertNotNull("loves should not be null", loves);
@@ -41,7 +41,7 @@ public class ResponseParserTest {
     }
 
     @Test
-    public void testParsesLoveList_MissingFields_SkipsLove() {
+    public void testParseLoveList_MissingFields_SkipsLove() {
         final List<Love> loves = responseParser.parseLoveList(Fixtures.getJsonObject("v1_loves-missing_fields.json"));
 
         assertNotNull("loves should not be null", loves);
@@ -49,7 +49,7 @@ public class ResponseParserTest {
     }
 
     @Test
-    public void testParsesLoveList_FullResponse_ReturnsAllLoves() {
+    public void testParseLoveList_FullResponse_ReturnsAllLoves() {
         final List<Love> loves = responseParser.parseLoveList(Fixtures.getJsonObject("v1_loves.json"));
 
         assertNotNull("loves should not be null", loves);
@@ -78,5 +78,16 @@ public class ResponseParserTest {
         assertEquals("should set lover email", "qnouffert@groupon.com", minimallyFilledOutLove.lover.email);
         assertNull("should set lover name to null when missing", minimallyFilledOutLove.lover.name);
         assertEquals("should set lover username", "qnouffert", minimallyFilledOutLove.lover.username);
+    }
+
+    @Test
+    public void testParseLoveList_BlankValues_SetsAsNull() {
+        final List<Love> loves = responseParser.parseLoveList(Fixtures.getJsonObject("v1_loves-blank_fields.json"));
+
+        assertNotNull("loves should not be null", loves);
+        assertEquals("should have 2 loves", 2, loves.size());
+
+        assertNull("empty string message should be set to null", loves.get(0).message);
+        assertNull("blank string message should be set to null", loves.get(1).message);
     }
 }
