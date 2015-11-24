@@ -89,7 +89,7 @@ class ResponseParser {
             return null;
         }
 
-        final String reason = loveJson.optString("reason", null);
+        final String reason = parseString(loveJson, "reason");
         if (reason == null) {
             return null;
         }
@@ -104,14 +104,14 @@ class ResponseParser {
             return null;
         }
 
-        final Calendar createdAt = parseDatetime(loveJson.optString("created_at"));
+        final Calendar createdAt = parseDatetime(loveJson.optString("created_at", null));
         if (createdAt == null) {
             return null;
         }
 
         final Love love = new Love(reason, lover, lovee, createdAt);
 
-        love.message = loveJson.optString("message", null);
+        love.message = parseString(loveJson, "message");
         love.isPrivate = loveJson.optBoolean("private_message", false);
 
         return love;
@@ -132,7 +132,7 @@ class ResponseParser {
             return null;
         }
 
-        final String email = userJson.optString("email", null);
+        final String email = parseString(userJson, "email");
         if (email == null) {
             return null;
         }
@@ -142,14 +142,14 @@ class ResponseParser {
             return user;
         }
 
-        final String username = userJson.optString("username", null);
+        final String username = parseString(userJson, "username");
         if (username == null) {
             return null;
         }
 
         user = new User(email, username);
 
-        user.name = userJson.optString("name", null);
+        user.name = parseString(userJson, "name");
 
         userCache.put(email, user);
 
@@ -182,6 +182,27 @@ class ResponseParser {
         calendar.setTime(parsedDate);
 
         return calendar;
+    }
+
+    /**
+     * Parses the string value from the json object. If the string is a blank value (either no
+     * characters or just whitespace), null will be returned. Null safe (will return null).
+     *
+     * @param jsonObject
+     *      the json object to get the string value from
+     * @param attributeName
+     *      the name of the attribute on the json object
+     * @return
+     *      the non-blank value, or null otherwise
+     */
+    private String parseString(final JSONObject jsonObject, final String attributeName) {
+        final String value = jsonObject.optString(attributeName, null);
+
+        if (value == null || value.replaceAll("\\s", "").equals("")) {
+            return null;
+        }
+
+        return value;
     }
 
     /**
