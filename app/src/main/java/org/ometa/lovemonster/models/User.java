@@ -1,5 +1,7 @@
 package org.ometa.lovemonster.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -9,7 +11,7 @@ import java.util.List;
 /**
  * Represents a User which can send and receive {@link Love}s.
  */
-public class User {
+public class User implements Parcelable {
 
     /**
      * Represents the association type between a love and a user.
@@ -74,4 +76,38 @@ public class User {
         this.receivedLoves = new ArrayList<>();
         this.sentLoves = new ArrayList<>();
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.email);
+        dest.writeString(this.name);
+        dest.writeString(this.username);
+        dest.writeList(this.receivedLoves);
+        dest.writeList(this.sentLoves);
+    }
+
+    protected User(Parcel in) {
+        this.email = in.readString();
+        this.name = in.readString();
+        this.username = in.readString();
+        this.receivedLoves = new ArrayList<Love>();
+        in.readList(this.receivedLoves, List.class.getClassLoader());
+        this.sentLoves = new ArrayList<Love>();
+        in.readList(this.sentLoves, List.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }
