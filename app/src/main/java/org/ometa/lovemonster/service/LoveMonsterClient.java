@@ -1,6 +1,7 @@
 package org.ometa.lovemonster.service;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -124,13 +125,32 @@ public class LoveMonsterClient {
      * @param page
      *      the page of results to send
      */
-    public void retrieveRecentLoves(@NonNull final LoveListResponseHandler loveListResponseHandler, @NonNull final int page) {
+    public void retrieveRecentLoves(@NonNull final LoveListResponseHandler loveListResponseHandler, final int page) {
+        retrieveRecentLoves(loveListResponseHandler, page, -1);
+    }
+
+    /**
+     * Retrieves recent loves asynchronously. Takes a {@link LoveListResponseHandler} which will be
+     * invoked on response completion.
+     *
+     * @param loveListResponseHandler
+     *      the response handler to use on response completion
+     * @param page
+     *      the page of results to send
+     * @param userId
+     *      the id of the user to filter results on. passing any non-positive number will cause this value to be ignored
+     */
+    public void retrieveRecentLoves(@NonNull final LoveListResponseHandler loveListResponseHandler, final int page, final int userId) {
         final String url = buildUrl("api/v1/loves");
-        logger.debug("method=retrieveRecentLoves url=" + url);
 
         final RequestParams params = new RequestParams();
         params.put("clientId", "androidclient");
         params.put("page", page);
+        if (userId >= 0) {
+            params.put("user_id", userId);
+        }
+
+        logger.debug("method=retrieveRecentLoves url=" + url + " params=" + params.toString());
 
         try {
             asyncHttpClient.get(url, params, new JsonHttpResponseHandler() {

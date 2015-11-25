@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doThrow;
@@ -44,7 +45,21 @@ public class LoveMonsterClientTest {
     }
 
     @Test
-    public void testRetrieveRecentLoves_CreatesCorrectRequest() {
+    public void testRetrieveRecentLoves_UserId_CreatesCorrectRequest() {
+        final ArgumentCaptor<RequestParams> requestParamsCaptor = ArgumentCaptor.forClass(RequestParams.class);
+
+        client.retrieveRecentLoves(mockResponseHandler, 77, 55);
+
+        verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
+
+        final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
+        assertEquals("should set client id param", requestParams.get("clientId"), "androidclient");
+        assertEquals("should set page param", requestParams.get("page"), "77");
+        assertEquals("should set user_id param", requestParams.get("user_id"), "55");
+    }
+
+    @Test
+    public void testRetrieveRecentLoves_NoUserId_CreatesCorrectRequest() {
         final ArgumentCaptor<RequestParams> requestParamsCaptor = ArgumentCaptor.forClass(RequestParams.class);
 
         client.retrieveRecentLoves(mockResponseHandler, 77);
@@ -54,6 +69,7 @@ public class LoveMonsterClientTest {
         final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
         assertEquals("should set client id param", requestParams.get("clientId"), "androidclient");
         assertEquals("should set page param", requestParams.get("page"), "77");
+        assertFalse("should not set user_id param", requestParams.containsKey("user_id"));
     }
 
     @Test
