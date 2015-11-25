@@ -12,6 +12,13 @@ import java.util.List;
 public class User {
 
     /**
+     * Represents the association type between a love and a user.
+     */
+    public enum UserLoveAssociation {
+        all, lover, lovee;
+    }
+
+    /**
      * The email address for this user.  Required field.
      */
     @NonNull
