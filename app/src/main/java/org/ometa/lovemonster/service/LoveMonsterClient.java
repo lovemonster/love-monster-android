@@ -119,12 +119,12 @@ public class LoveMonsterClient {
      * Retrieves recent loves asynchronously. Takes a {@link LoveListResponseHandler} which will be
      * invoked on response completion.
      *
-     * @param page
-     *      the page of results to send
      * @param loveListResponseHandler
      *      the response handler to use on response completion
+     * @param page
+     *      the page of results to send
      */
-    public void retrieveRecentLoves(@NonNull final int page, @NonNull final LoveListResponseHandler loveListResponseHandler) {
+    public void retrieveRecentLoves(@NonNull final LoveListResponseHandler loveListResponseHandler, @NonNull final int page) {
         final String url = buildUrl("api/v1/loves");
         logger.debug("method=retrieveRecentLoves url=" + url);
 

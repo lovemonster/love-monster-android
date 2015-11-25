@@ -13,7 +13,7 @@ public class LoveMonsterClientIntegrationTest extends AndroidTestCase {
     public void testGetRecentLoves() {
         final List<Love> retrievedLoves = new ArrayList<>();
 
-        LoveMonsterClient.getInstance().retrieveRecentLoves(1, new LoveMonsterClient.LoveListResponseHandler() {
+        LoveMonsterClient.getInstance().retrieveRecentLoves(new LoveMonsterClient.LoveListResponseHandler() {
             @Override
             public void onSuccess(@NonNull List<Love> loves, int totalPages) {
                 retrievedLoves.addAll(loves);
@@ -23,7 +23,7 @@ public class LoveMonsterClientIntegrationTest extends AndroidTestCase {
             public void onFail() {
                 fail("the get recent loves request failed");
             }
-        });
+        }, 1);
 
         assertFalse("should have retrieved loves", retrievedLoves.isEmpty());
 
