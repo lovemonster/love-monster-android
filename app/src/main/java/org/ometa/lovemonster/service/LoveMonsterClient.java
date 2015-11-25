@@ -41,7 +41,7 @@ public class LoveMonsterClient {
          * @param loves
          *      the resulting loves
          */
-        void onSuccess(@NonNull List<Love> loves);
+        void onSuccess(@NonNull List<Love> loves, int totalPages);
 
         /**
          * Handler when a request fails.
@@ -137,14 +137,18 @@ public class LoveMonsterClient {
                 @Override
                 public void onSuccess(final int statusCode, final Header[] headers, final JSONObject response) {
                     final String responseBody;
+                    final int totalPages;
+
                     if (response == null) {
                         responseBody = "null";
+                        totalPages = 0;
                     } else {
                         responseBody = response.toString();
+                        totalPages = response.optInt("pages", 0);
                     }
 
                     logger.debug("method=retrieveRecentLoves url=" + url + " handler=onSuccess statusCode=" + statusCode + " response=" + responseBody);
-                    loveListResponseHandler.onSuccess(responseParser.parseLoveList(response));
+                    loveListResponseHandler.onSuccess(responseParser.parseLoveList(response), totalPages);
                 }
 
                 @Override

@@ -15,7 +15,7 @@ public class LoveMonsterClientIntegrationTest extends AndroidTestCase {
 
         LoveMonsterClient.getInstance().retrieveRecentLoves(1, new LoveMonsterClient.LoveListResponseHandler() {
             @Override
-            public void onSuccess(@NonNull List<Love> loves) {
+            public void onSuccess(@NonNull List<Love> loves, int totalPages) {
                 retrievedLoves.addAll(loves);
             }
 

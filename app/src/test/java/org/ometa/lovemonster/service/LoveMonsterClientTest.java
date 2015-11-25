@@ -4,6 +4,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +77,21 @@ public class LoveMonsterClientTest {
     }
 
     @Test
-    public void testRetrieveRecentLoves_RequestSucceeds_InvokesOnSuccess() {
+    public void testRetrieveRecentLoves_RequestSucceeds_InvokesOnSuccess() throws JSONException {
+        final ArgumentCaptor<JsonHttpResponseHandler> jsonHttpResponseHandlerArgumentCaptor = ArgumentCaptor.forClass(JsonHttpResponseHandler.class);
+        final List<Love> expectedLoves = new ArrayList<>();
+        final JSONObject expectedJsonObject = new JSONObject("{\"pages\":7}");
+        when(mockResponseParser.parseLoveList(expectedJsonObject)).thenReturn(expectedLoves);
+
+        client.retrieveRecentLoves(1, mockResponseHandler);
+        verify(mockAsyncHttpClient).get(anyString(), any(RequestParams.class), jsonHttpResponseHandlerArgumentCaptor.capture());
+        jsonHttpResponseHandlerArgumentCaptor.getValue().onSuccess(200, null, expectedJsonObject);
+
+        verify(mockResponseHandler).onSuccess(expectedLoves, 7);
+    }
+
+    @Test
+    public void testRetrieveRecentLoves_RequestSucceeds_MissingPages_InvokesOnSuccessWithDefaultPages() {
         final ArgumentCaptor<JsonHttpResponseHandler> jsonHttpResponseHandlerArgumentCaptor = ArgumentCaptor.forClass(JsonHttpResponseHandler.class);
         final List<Love> expectedLoves = new ArrayList<>();
         final JSONObject expectedJsonObject = new JSONObject();
@@ -86,7 +101,19 @@ public class LoveMonsterClientTest {
         verify(mockAsyncHttpClient).get(anyString(), any(RequestParams.class), jsonHttpResponseHandlerArgumentCaptor.capture());
         jsonHttpResponseHandlerArgumentCaptor.getValue().onSuccess(200, null, expectedJsonObject);
 
-        verify(mockResponseHandler).onSuccess(expectedLoves);
+        verify(mockResponseHandler).onSuccess(expectedLoves, 0);
+    }
+
+    @Test
+    public void testRetrieveRecentLoves_RequestSucceeds_NullResponse_InvokesOnSuccessWithDefaultPages() {
+        final ArgumentCaptor<JsonHttpResponseHandler> jsonHttpResponseHandlerArgumentCaptor = ArgumentCaptor.forClass(JsonHttpResponseHandler.class);
+        final List<Love> expectedLoves = new ArrayList<>();
+
+        client.retrieveRecentLoves(1, mockResponseHandler);
+        verify(mockAsyncHttpClient).get(anyString(), any(RequestParams.class), jsonHttpResponseHandlerArgumentCaptor.capture());
+        jsonHttpResponseHandlerArgumentCaptor.getValue().onSuccess(200, null, (JSONObject) null);
+
+        verify(mockResponseHandler).onSuccess(expectedLoves, 0);
     }
 
     /**
