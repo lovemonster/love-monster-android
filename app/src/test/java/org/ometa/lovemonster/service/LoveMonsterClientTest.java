@@ -53,9 +53,9 @@ public class LoveMonsterClientTest {
         verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
 
         final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
-        assertEquals("should set client id param", requestParams.get("clientId"), "androidapp");
-        assertEquals("should set page param", requestParams.get("page"), "77");
-        assertEquals("should set user_id param", requestParams.get("user_id"), "55");
+        assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
+        assertEquals("should set page param", "77", requestParams.get("page"));
+        assertEquals("should set user_id param", "55", requestParams.get("user_id"));
     }
 
     @Test
@@ -67,8 +67,8 @@ public class LoveMonsterClientTest {
         verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
 
         final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
-        assertEquals("should set client id param", requestParams.get("clientId"), "androidapp");
-        assertEquals("should set page param", requestParams.get("page"), "77");
+        assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
+        assertEquals("should set page param", "77", requestParams.get("page"));
         assertFalse("should not set user_id param", requestParams.containsKey("user_id"));
     }
 
