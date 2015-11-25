@@ -12,6 +12,8 @@ import org.ometa.lovemonster.Logger;
 import org.ometa.lovemonster.models.Love;
 import org.ometa.lovemonster.models.User;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -49,6 +51,27 @@ public class LoveMonsterClient {
          * Handler when a request fails.
          */
         void onFail();
+    }
+
+    /**
+     * Handler for response callbacks from the {@link LoveMonsterClient} for calls which return a single love.
+     */
+    public interface LoveResponseHandler {
+        /**
+         * Invoked when the request successfully completes.  The passed love will not be null.
+         *
+         * @param love
+         *      the resulting love
+         */
+        void onSuccess(@NonNull Love love);
+
+        /**
+         * Handler when a request fails.
+         *
+         * @param errorMessages
+         *      the error messages from the server
+         */
+        void onFail(@NonNull List<String> errorMessages);
     }
 
     /**
@@ -177,9 +200,7 @@ public class LoveMonsterClient {
         }
 
         final String url = buildUrl("api/v1/loves");
-
-        final RequestParams params = new RequestParams();
-        params.put("clientId", "androidapp");
+        final RequestParams params = buildParams();
         params.put("page", page);
         if (user != null) {
             params.put("user_id", user.username);
@@ -212,7 +233,7 @@ public class LoveMonsterClient {
                 }
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                public void onFailure(int statusCode, final Header[] headers, final Throwable throwable, final JSONObject errorResponse) {
                     final String responseBody;
                     if (errorResponse == null) {
                         responseBody = "null";
@@ -231,6 +252,80 @@ public class LoveMonsterClient {
     }
 
     /**
+     * Creates a new love on the server. If an error occurs, error messages will be passed to the
+     * failure handler. Otherwise, the created love will be returned on the success handler.
+     *
+     * @param love
+     *      the love to creeate
+     * @param loveResponseHandler
+     *      the handler for the response
+     * @throws IllegalArgumentException
+     *      if the specified love is null
+     */
+    public void makeLove(@NonNull final Love love, @NonNull final LoveResponseHandler loveResponseHandler) throws IllegalArgumentException {
+        if (love == null) {
+            throw new IllegalArgumentException("argument `love` cannot be null");
+        }
+
+        final String url = buildUrl("api/v1/loves");
+        final RequestParams params = buildParams();
+        params.put("reason", love.reason);
+        params.put("message", love.message);
+        if (love.lovee != null) {
+            params.put("to", love.lovee.username);
+        }
+        if (love.lover != null) {
+            params.put("from", love.lover.username);
+        }
+        params.put("private_message", love.isPrivate);
+
+        logger.debug("method=makeLove url=" + url + " params=" + params.toString());
+
+        try {
+            asyncHttpClient.post(url, params, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(final int statusCode, final Header[] headers, final JSONObject response) {
+                    final String responseBody;
+                    if (response == null) {
+                        responseBody = "null";
+                    } else {
+                        responseBody = response.toString();
+                    }
+
+                    logger.debug("method=makeLove url=" + url + " handler=onSuccess statusCode=" + statusCode + " response=" + responseBody);
+                    loveResponseHandler.onSuccess(love);
+                }
+
+                @Override
+                public void onFailure(int statusCode, final Header[] headers, final Throwable throwable, final JSONObject errorResponse) {
+                    final String responseBody;
+                    final List<String> errorMessages = new ArrayList<>();
+
+                    if (errorResponse == null) {
+                        responseBody = "null";
+                    } else {
+                        responseBody = errorResponse.toString();
+                        final String errors = errorResponse.optString("errors", null);
+                        if (errors != null) {
+                            errorMessages.add(errors);
+                        }
+                    }
+
+                    if (throwable != null) {
+                        errorMessages.add(throwable.getLocalizedMessage());
+                    }
+
+                    logger.debug("method=makeLove url=" + url + "  handler=onFailure statusCode=" + statusCode + " response=" + responseBody, throwable);
+                    loveResponseHandler.onFail(errorMessages);
+                }
+            });
+        } catch (final Exception e){
+            logger.debug("method=makeLove url=" + url, e);
+            loveResponseHandler.onFail(Arrays.asList(e.getLocalizedMessage()));
+        }
+    }
+
+    /**
      * Builds the full url from the specified path.
      *
      * @param path
@@ -240,5 +335,16 @@ public class LoveMonsterClient {
      */
     private String buildUrl(final String path) {
         return "http://love.snc1/" + path;
+    }
+
+    /**
+     * Builds request params to be used in making requests.
+     * @return
+     *      the default request params
+     */
+    private RequestParams buildParams() {
+        final RequestParams params = new RequestParams();
+        params.put("clientId", "androidapp");
+        return  params;
     }
 }

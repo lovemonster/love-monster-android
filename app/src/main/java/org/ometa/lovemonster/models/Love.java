@@ -34,13 +34,13 @@ public class Love {
      * The {@link User} who sent this love.  Required field.
      */
     @NonNull
-    public User lover;
+    public final User lover;
 
     /**
      * The {@link User} who received this love.  Required field.
      */
     @NonNull
-    public User lovee;
+    public final User lovee;
 
     /**
      * The {@link Like}s this love has received. May be empty, but cannot be null.
@@ -64,6 +64,24 @@ public class Love {
      *      the {@link User} sending the love
      * @param lovee
      *      the {@link User} receiving the love
+     * @throws IllegalArgumentException
+     *      if the specified reason, lover, lovee, or createdAt are {@code null}
+     */
+    public Love(@NonNull final String reason, @NonNull final User lover, @NonNull final User lovee) throws IllegalArgumentException {
+        this(reason, lover, lovee, Calendar.getInstance());
+    }
+
+    /**
+     * Instantiates a {@code Love} instance with the minimum required fields.
+     *
+     *  @param reason
+     *      the reason for why this love was sent
+     * @param lover
+     *      the {@link User} sending the love
+     * @param lovee
+     *      the {@link User} receiving the love
+     * @param createdAt
+     *      when this love was created
      * @throws IllegalArgumentException
      *      if the specified reason, lover, lovee, or createdAt are {@code null}
      */
