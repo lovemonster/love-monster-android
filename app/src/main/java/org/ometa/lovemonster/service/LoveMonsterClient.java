@@ -144,7 +144,7 @@ public class LoveMonsterClient {
         final String url = buildUrl("api/v1/loves");
 
         final RequestParams params = new RequestParams();
-        params.put("clientId", "androidclient");
+        params.put("clientId", "androidapp");
         params.put("page", page);
         if (userId >= 0) {
             params.put("user_id", userId);
