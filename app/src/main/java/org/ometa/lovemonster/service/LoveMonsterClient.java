@@ -10,6 +10,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 import org.ometa.lovemonster.Logger;
 import org.ometa.lovemonster.models.Love;
+import org.ometa.lovemonster.models.User;
 
 import java.util.List;
 
@@ -126,28 +127,67 @@ public class LoveMonsterClient {
      *      the page of results to send
      */
     public void retrieveRecentLoves(@NonNull final LoveListResponseHandler loveListResponseHandler, final int page) {
-        retrieveRecentLoves(loveListResponseHandler, page, -1);
+        retrieveRecentLoves(loveListResponseHandler, page, null);
     }
 
     /**
      * Retrieves recent loves asynchronously. Takes a {@link LoveListResponseHandler} which will be
-     * invoked on response completion.
+     * invoked on response completion. Will filter results if {@code user} is specified, returning
+     * *all* {@link Love}s sent to or sent by the specified user.
      *
-     * @param loveListResponseHandler
+     *  @param loveListResponseHandler
      *      the response handler to use on response completion
      * @param page
      *      the page of results to send
-     * @param userId
-     *      the id of the user to filter results on. passing any non-positive number will cause this value to be ignored
+     * @param user
+     *      the user to use for filtering results.  if null, no filtering will occur
      */
-    public void retrieveRecentLoves(@NonNull final LoveListResponseHandler loveListResponseHandler, final int page, final int userId) {
+    public void retrieveRecentLoves(@NonNull final LoveListResponseHandler loveListResponseHandler, final int page, @Nullable final User user) {
+        retrieveRecentLoves(loveListResponseHandler, page, user, null);
+    }
+
+    /**
+     * Retrieves recent loves asynchronously. Takes a {@link LoveListResponseHandler} which will be
+     * invoked on response completion. Will filter results if {@code user} is specified, returning
+     * *all* {@link Love}s sent to or sent by the specified user, unless {@code userLoveAssociation}
+     * is specified which will further constrain the results to loves *either* sent to or sent by the
+     * specified user.
+     *
+     *  @param loveListResponseHandler
+     *      the response handler to use on response completion
+     * @param page
+     *      the page of results to send
+     * @param user
+     *      the user to use for filtering results.  if null, no filtering will occur
+     * @param userLoveAssociation
+     *      used to indicate how results should be filtered for a user.  if null or
+     *      {@link User.UserLoveAssociation#all}, then all loves sent or received to that
+     *      user will be returned.  if {@link User.UserLoveAssociation#lover}, then only
+     *      loves sent *by* the user (i.e. where the specified user is the lover) will be returned.
+     *      likewise, if {@link User.UserLoveAssociation#lovee} is specified, then only
+     *      loves *received* by the user (i.e. where the user is the lovee) will be returned.
+     *      this value is only valid to be passed if {@code user} is also passed, but you may omit
+     *      this value even if user is passed.
+     * @throws IllegalArgumentException
+     *      if {@code userLoveAssociation} is passed, but {@code user} is not passed
+     */
+    public void retrieveRecentLoves(@NonNull final LoveListResponseHandler loveListResponseHandler, final int page, @Nullable final User user, @Nullable final User.UserLoveAssociation userLoveAssociation) throws IllegalArgumentException {
+        if (userLoveAssociation != null && user == null) {
+            throw new IllegalArgumentException("cannot specify a `userLoveAssociation` without a `user`");
+        }
+
         final String url = buildUrl("api/v1/loves");
 
         final RequestParams params = new RequestParams();
         params.put("clientId", "androidapp");
         params.put("page", page);
-        if (userId >= 0) {
-            params.put("user_id", userId);
+        if (user != null) {
+            params.put("user_id", user.username);
+            if (userLoveAssociation == User.UserLoveAssociation.lovee) {
+                params.put("filter", "to");
+            } else if (userLoveAssociation == User.UserLoveAssociation.lover) {
+                params.put("filter", "from");
+            }
         }
 
         logger.debug("method=retrieveRecentLoves url=" + url + " params=" + params.toString());

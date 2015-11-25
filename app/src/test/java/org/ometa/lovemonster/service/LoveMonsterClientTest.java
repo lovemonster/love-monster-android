@@ -12,6 +12,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.ometa.lovemonster.models.Love;
+import org.ometa.lovemonster.models.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,21 +46,82 @@ public class LoveMonsterClientTest {
     }
 
     @Test
-    public void testRetrieveRecentLoves_UserId_CreatesCorrectRequest() {
+    public void testRetrieveRecentLoves_User_NullUserAssociation_CreatesCorrectRequest() {
         final ArgumentCaptor<RequestParams> requestParamsCaptor = ArgumentCaptor.forClass(RequestParams.class);
 
-        client.retrieveRecentLoves(mockResponseHandler, 77, 55);
+        client.retrieveRecentLoves(mockResponseHandler, 77, new User("foo@example.com", "example_username"), null);
 
         verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
 
         final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
         assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
         assertEquals("should set page param", "77", requestParams.get("page"));
-        assertEquals("should set user_id param", "55", requestParams.get("user_id"));
+        assertEquals("should set user_id param", "example_username", requestParams.get("user_id"));
+        assertFalse("should not set filter param", requestParams.containsKey("filter"));
     }
 
     @Test
-    public void testRetrieveRecentLoves_NoUserId_CreatesCorrectRequest() {
+    public void testRetrieveRecentLoves_User_AllUserAssociation_CreatesCorrectRequest() {
+        final ArgumentCaptor<RequestParams> requestParamsCaptor = ArgumentCaptor.forClass(RequestParams.class);
+
+        client.retrieveRecentLoves(mockResponseHandler, 77, new User("foo@example.com", "example_username"), User.UserLoveAssociation.all);
+
+        verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
+
+        final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
+        assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
+        assertEquals("should set page param", "77", requestParams.get("page"));
+        assertEquals("should set user_id param", "example_username", requestParams.get("user_id"));
+        assertFalse("should not set filter param", requestParams.containsKey("filter"));
+    }
+
+    @Test
+    public void testRetrieveRecentLoves_User_LoverUserAssociation_CreatesCorrectRequest() {
+        final ArgumentCaptor<RequestParams> requestParamsCaptor = ArgumentCaptor.forClass(RequestParams.class);
+
+        client.retrieveRecentLoves(mockResponseHandler, 77, new User("foo@example.com", "example_username"), User.UserLoveAssociation.lover);
+
+        verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
+
+        final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
+        assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
+        assertEquals("should set page param", "77", requestParams.get("page"));
+        assertEquals("should set user_id param", "example_username", requestParams.get("user_id"));
+        assertEquals("should set filter param", "from", requestParams.get("filter"));
+    }
+
+    @Test
+    public void testRetrieveRecentLoves_User_LoveeUserAssociation_CreatesCorrectRequest() {
+        final ArgumentCaptor<RequestParams> requestParamsCaptor = ArgumentCaptor.forClass(RequestParams.class);
+
+        client.retrieveRecentLoves(mockResponseHandler, 77, new User("foo@example.com", "example_username"), User.UserLoveAssociation.lovee);
+
+        verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
+
+        final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
+        assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
+        assertEquals("should set page param", "77", requestParams.get("page"));
+        assertEquals("should set user_id param", "example_username", requestParams.get("user_id"));
+        assertEquals("should set filter param", "to", requestParams.get("filter"));
+    }
+
+    @Test
+    public void testRetrieveRecentLoves_User_NoUserLoveAssociation_CreatesCorrectRequest() {
+        final ArgumentCaptor<RequestParams> requestParamsCaptor = ArgumentCaptor.forClass(RequestParams.class);
+
+        client.retrieveRecentLoves(mockResponseHandler, 77, new User("foo@example.com", "example_username"));
+
+        verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
+
+        final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
+        assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
+        assertEquals("should set page param", "77", requestParams.get("page"));
+        assertEquals("should set user_id param", "example_username", requestParams.get("user_id"));
+        assertFalse("should not set filter param", requestParams.containsKey("filter"));
+    }
+
+    @Test
+    public void testRetrieveRecentLoves_NoUser_CreatesCorrectRequest() {
         final ArgumentCaptor<RequestParams> requestParamsCaptor = ArgumentCaptor.forClass(RequestParams.class);
 
         client.retrieveRecentLoves(mockResponseHandler, 77);
