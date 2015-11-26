@@ -3,6 +3,7 @@ package org.ometa.lovemonster.ui.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import org.ometa.lovemonster.Logger;
@@ -19,6 +21,7 @@ import org.ometa.lovemonster.models.User;
 import org.ometa.lovemonster.service.LoveMonsterClient;
 import org.ometa.lovemonster.ui.adapters.SmartFragmentStatePagerAdapter;
 import org.ometa.lovemonster.ui.fragments.LovesListFragment;
+import org.ometa.lovemonster.ui.fragments.MakeLoveDialogFragment;
 
 import java.util.List;
 
@@ -52,6 +55,22 @@ public class UserLoveActivity extends AppCompatActivity {
         getReceivedLoves();
 
         getSupportActionBar().setTitle(titleFor(user));
+
+        setupMakeLoveButton();
+    }
+
+    /**
+     * Configures the floating action button to send love to the user being viewed.
+     */
+    private void setupMakeLoveButton() {
+        final FloatingActionButton makeLoveButton = (FloatingActionButton) findViewById(R.id.make_love);
+        makeLoveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final MakeLoveDialogFragment makeLoveDialogFragment = MakeLoveDialogFragment.newInstance(user);
+                makeLoveDialogFragment.show(getFragmentManager(), "makeLoveDialog");
+            }
+        });
     }
 
     private void getSentLoves() {

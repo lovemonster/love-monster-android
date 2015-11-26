@@ -326,6 +326,14 @@ public class LoveMonsterClient {
     }
 
     /**
+     * Returns the authenticated in {@link User}.
+     * @return
+     */
+    public User getAuthenticatedUser() {
+        return new User("foo@example.com", "foo");
+    }
+
+    /**
      * Builds the full url from the specified path.
      *
      * @param path
