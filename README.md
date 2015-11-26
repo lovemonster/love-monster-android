@@ -17,12 +17,12 @@ Time Spent: **1** cumulative developer hours.
 
 The following **required** functionality is completed:
 
-* [] Display a page of the most recent loves, including To, From,
-  Reason, time ago, and the optional message.
-* [] "Send Love" button that renders an activity that allows the user to
+* [x] Display a page of the most recent loves, including To, From,
+  and Reason
+* [x] "Send Love" button that renders an activity that allows the user to
   select a receipient, specify the reason
 and optional longer message, then click Send to post the love to the API 
-* [] Click on a user to render a user detail page, showing recently sent
+* [x] Click on a user to render a user detail page, showing recently sent
   and received loves.
 * [] Settings page to specify connection information that gets stored in
   User Preferences keystore
@@ -31,6 +31,7 @@ and optional longer message, then click Send to post the love to the API
   rendering of their own activity.
 
 The following **optional** features are implemented:
+* [] display time ago and the optional message for a love
 * [] Make the recipient form type-ahead based on the full userlist from LDAP
 * [] Infinite scrolling of loves, fetching more from the API
 * [] Allow input and rendering of github emoticons like the main web app does
@@ -39,6 +40,10 @@ The following **optional** features are implemented:
 * [] Allow the user to Like a love.
 * [] Add a dialog showing extra detail about a Love that allows extra activities (liking a love, showing the reason, etc)
 * [] Ability to add your "favorite" people (icon on user detail, then shows up in hamburger menu under "Favorites" header). Stores this information in user preferences.
+
+## Walkthrough
+
+![love-monster-walkthrough.gif](love-monster-walkthrough.gif)
 
 ## Notes
 

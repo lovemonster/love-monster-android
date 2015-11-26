@@ -326,6 +326,14 @@ public class LoveMonsterClient {
     }
 
     /**
+     * Returns the authenticated in {@link User}.
+     * @return
+     */
+    public User getAuthenticatedUser() {
+        return new User("anthony@groupon.com", "anthony");
+    }
+
+    /**
      * Builds the full url from the specified path.
      *
      * @param path
@@ -334,7 +342,7 @@ public class LoveMonsterClient {
      *      the full url
      */
     private String buildUrl(final String path) {
-        return "http://love.snc1/" + path;
+        return "http://love1-staging.snc1/" + path;
     }
 
     /**

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -39,6 +40,11 @@ public class MakeLoveDialogFragment extends DialogFragment {
     };
 
     /**
+     * The arugment name for the lovee username.
+     */
+    public static final String LOVEE_USERNAME_ARGUMENT_NAME = "loveeUsername";
+
+    /**
      * Creates a new instance of this dialog fragment, setup with the specified user as the sender.
      *
      * @param user
@@ -50,7 +56,7 @@ public class MakeLoveDialogFragment extends DialogFragment {
         final MakeLoveDialogFragment dialog = new MakeLoveDialogFragment();
         final Bundle arguments = new Bundle();
 
-        arguments.putParcelable(User.PARCELABLE_KEY, user);
+        arguments.putString(LOVEE_USERNAME_ARGUMENT_NAME, user.username);
         dialog.setArguments(arguments);
 
         return dialog;
@@ -59,9 +65,8 @@ public class MakeLoveDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        final User lover = (User) getArguments().getParcelable(User.PARCELABLE_KEY);
-
-        return new MaterialDialog.Builder(getActivity())
+        Log.d("foo", "create: " + getArguments().getString(LOVEE_USERNAME_ARGUMENT_NAME));
+        final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .iconRes(R.drawable.heart)
                 .limitIconToDefaultSize()
                 .autoDismiss(false)
@@ -80,7 +85,7 @@ public class MakeLoveDialogFragment extends DialogFragment {
                         final MDButton sendButton = materialDialog.getActionButton(DialogAction.POSITIVE);
 
                         final User lovee = new User("", username.getText().toString());
-                        final Love love = new Love(reason.getText().toString(), lover, lovee);
+                        final Love love = new Love(reason.getText().toString(), LoveMonsterClient.getInstance().getAuthenticatedUser(), lovee);
                         love.message = message.getText().toString();
                         love.isPrivate = isPrivate.isChecked();
 
@@ -125,15 +130,13 @@ public class MakeLoveDialogFragment extends DialogFragment {
                 })
                 .onNegative(CANCEL_CALLBACK)
                 .build();
-    }
 
-    @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        final EditText username = (EditText) dialog.getView().findViewById(R.id.fragment_make_love_dialog_lovee_username);
 
-        final EditText username = (EditText) view.findViewById(R.id.fragment_make_love_dialog_lovee_username);
-
+        username.setText(getArguments().getString(LOVEE_USERNAME_ARGUMENT_NAME));
         username.requestFocus();
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        return dialog;
     }
+
 }

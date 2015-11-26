@@ -54,7 +54,7 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context, UserLoveActivity.class);
-                    i.putExtra("user", love.lover);
+                    i.putExtra(User.PARCELABLE_KEY, love.lover);
                     context.startActivity(i);
                 }
             });
@@ -63,7 +63,7 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context, UserLoveActivity.class);
-                    i.putExtra("user", love.lovee);
+                    i.putExtra(User.PARCELABLE_KEY, love.lovee);
                     context.startActivity(i);
                 }
             });
