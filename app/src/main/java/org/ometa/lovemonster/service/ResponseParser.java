@@ -196,6 +196,12 @@ class ResponseParser {
      *      the non-blank value, or null otherwise
      */
     private String parseString(final JSONObject jsonObject, final String attributeName) {
+        // JSONObject will helpfully coerce null to "null" for us.  We don't want that.
+        // http://code.google.com/p/android/issues/detail?id=13830
+        if (jsonObject.isNull(attributeName)) {
+            return null;
+        }
+
         final String value = jsonObject.optString(attributeName, null);
 
         if (value == null || value.replaceAll("\\s", "").equals("")) {
