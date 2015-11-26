@@ -3,4 +3,15 @@
     <string name="title_activity_user_love">UserLoveActivity</string>
 
     <string name="action_settings">Settings</string>
+
+
+    <!-- Make Love Dialog -->
+    <string name="fragment_make_love_dialog_title">Send Love</string>
+    <string name="fragment_make_love_dialog_lovee_username">To</string>
+    <string name="fragment_make_love_dialog_reason">Reason</string>
+    <string name="fragment_make_love_dialog_message">Message (Optional)</string>
+    <string name="fragment_make_love_dialog_private">Send Quietly (private)</string>
+    <string name="fragment_make_love_dialog_send">Send</string>
+    <string name="fragment_make_love_dialog_error_unable_to_send">Unable to send love. Please try again.</string>
+    <string name="fragment_make_love_dialog_success">Love Sent!</string>
 </resources>

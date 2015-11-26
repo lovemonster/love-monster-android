@@ -44,7 +44,7 @@ public class UserLoveActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         client = LoveMonsterClient.getInstance();
-        user = (User) getIntent().getParcelableExtra("user");
+        user = (User) getIntent().getParcelableExtra(User.PARCELABLE_KEY);
 
         logger = new Logger(UserLoveActivity.class);
 
