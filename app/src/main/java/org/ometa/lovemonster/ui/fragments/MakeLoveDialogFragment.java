@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -64,7 +65,8 @@ public class MakeLoveDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        return new MaterialDialog.Builder(getActivity())
+        Log.d("foo", "create: " + getArguments().getString(LOVEE_USERNAME_ARGUMENT_NAME));
+        final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .iconRes(R.drawable.heart)
                 .limitIconToDefaultSize()
                 .autoDismiss(false)
@@ -128,16 +130,13 @@ public class MakeLoveDialogFragment extends DialogFragment {
                 })
                 .onNegative(CANCEL_CALLBACK)
                 .build();
-    }
 
-    @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        final EditText username = (EditText) view.findViewById(R.id.fragment_make_love_dialog_lovee_username);
+        final EditText username = (EditText) dialog.getView().findViewById(R.id.fragment_make_love_dialog_lovee_username);
 
         username.setText(getArguments().getString(LOVEE_USERNAME_ARGUMENT_NAME));
         username.requestFocus();
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        return dialog;
     }
+
 }

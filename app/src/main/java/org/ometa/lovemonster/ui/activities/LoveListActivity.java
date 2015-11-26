@@ -32,7 +32,7 @@ public class LoveListActivity extends AppCompatActivity {
         makeLoveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final MakeLoveDialogFragment makeLoveDialogFragment = MakeLoveDialogFragment.newInstance(new User("foo@example.com", "foo"));
+                final MakeLoveDialogFragment makeLoveDialogFragment = MakeLoveDialogFragment.newInstance(new User("foo@example.com", ""));
                 makeLoveDialogFragment.show(getFragmentManager(), "makeLoveDialog");
             }
         });

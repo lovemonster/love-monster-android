@@ -330,7 +330,7 @@ public class LoveMonsterClient {
      * @return
      */
     public User getAuthenticatedUser() {
-        return new User("foo@example.com", "foo");
+        return new User("anthony@groupon.com", "anthony");
     }
 
     /**
@@ -342,7 +342,7 @@ public class LoveMonsterClient {
      *      the full url
      */
     private String buildUrl(final String path) {
-        return "http://love.snc1/" + path;
+        return "http://love1-staging.snc1/" + path;
     }
 
     /**
