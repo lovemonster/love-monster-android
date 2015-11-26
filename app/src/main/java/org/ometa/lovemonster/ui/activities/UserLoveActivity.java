@@ -48,7 +48,7 @@ public class UserLoveActivity extends AppCompatActivity {
         lovesReceived = (LovesListFragment) fragmentAdapter.getRegisteredFragment(1);
 
         client = LoveMonsterClient.getInstance();
-        user = (User) getIntent().getParcelableExtra("user");
+        user = (User) getIntent().getParcelableExtra(User.PARCELABLE_KEY);
 
         logger = new Logger(UserLoveActivity.class);
 

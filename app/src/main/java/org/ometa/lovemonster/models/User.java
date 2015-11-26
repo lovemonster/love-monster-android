@@ -14,6 +14,11 @@ import java.util.List;
 public class User implements Parcelable {
 
     /**
+     * The key used to reference this User when parceling it.
+     */
+    public static final String PARCELABLE_KEY = User.class.getName();
+
+    /**
      * Represents the association type between a love and a user.
      */
     public enum UserLoveAssociation {
