@@ -1,6 +1,7 @@
 package org.ometa.lovemonster.ui.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import org.ometa.lovemonster.R;
 import org.ometa.lovemonster.models.Love;
 import org.ometa.lovemonster.models.User;
+import org.ometa.lovemonster.ui.activities.UserLoveActivity;
 
 import java.util.List;
 
@@ -38,12 +40,33 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
     }
     static class ViewHolder {
 
+        private Context context;
         public ImageView ivSenderImage, ivRecipientImage;
-        public TextView tvSenderName, tvRecipientName, tvReason, tvEllipsis, tvMessage;
+        public TextView tvLoverName, tvLoveeName, tvReason, tvEllipsis, tvMessage;
 
-        public void populate(Love love) {
-            tvSenderName.setText(displayNameFor(love.lover));
-            tvRecipientName.setText(displayNameFor(love.lovee));
+        public ViewHolder(Context context) {
+            this.context = context;
+        }
+
+        public void populate(final Love love) {
+            tvLoverName.setText(displayNameFor(love.lover));
+            tvLoverName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(context, UserLoveActivity.class);
+                    i.putExtra("user", love.lover);
+                    context.startActivity(i);
+                }
+            });
+            tvLoveeName.setText(displayNameFor(love.lovee));
+            tvLoveeName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(context, UserLoveActivity.class);
+                    i.putExtra("user", love.lovee);
+                    context.startActivity(i);
+                }
+            });
             tvReason.setText(love.reason);
             if (love.hasMessage()) {
                 tvEllipsis.setVisibility(View.VISIBLE);
@@ -84,11 +107,11 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
     private View inflateView(ViewGroup parent) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.love_list_item, parent, false);
 
-        final ViewHolder viewHolder = new ViewHolder();
+        final ViewHolder viewHolder = new ViewHolder(getContext());
         viewHolder.ivRecipientImage = (ImageView) view.findViewById(R.id.ivRecipientImage);
         viewHolder.ivSenderImage = (ImageView) view.findViewById(R.id.ivSenderImage);
-        viewHolder.tvRecipientName = (TextView) view.findViewById(R.id.tvRecipientName);
-        viewHolder.tvSenderName = (TextView) view.findViewById(R.id.tvSenderName);
+        viewHolder.tvLoveeName = (TextView) view.findViewById(R.id.tvRecipientName);
+        viewHolder.tvLoverName = (TextView) view.findViewById(R.id.tvSenderName);
         viewHolder.tvReason = (TextView) view.findViewById(R.id.tvReason);
         viewHolder.tvEllipsis = (TextView) view.findViewById(R.id.tvElipsis);
         viewHolder.tvMessage = (TextView) view.findViewById(R.id.tvMessage);
