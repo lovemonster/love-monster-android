@@ -50,6 +50,8 @@ public class UserLoveActivity extends AppCompatActivity {
 
         getSentLoves();
         getReceivedLoves();
+
+        getSupportActionBar().setTitle(titleFor(user));
     }
 
     private void getSentLoves() {
@@ -122,6 +124,12 @@ public class UserLoveActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String titleFor(User user) {
+        if (user.name != null)
+            return user.name;
+        return user.username;
     }
 
     public class LovesPagerAdapter extends SmartFragmentStatePagerAdapter {
