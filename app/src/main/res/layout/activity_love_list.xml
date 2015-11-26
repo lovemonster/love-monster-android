@@ -10,8 +10,11 @@
     tools:context=".LoveListActivity"
     android:id="@+id/love_list_activity">
 
-    <TextView android:text="Hello World!" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <fragment
+        android:name="org.ometa.lovemonster.ui.fragments.LovesListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lovesList" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/make_love"
