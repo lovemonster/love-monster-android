@@ -25,12 +25,11 @@ import java.util.List;
 public class UserLoveActivity extends AppCompatActivity {
     private Logger logger;
     private LoveMonsterClient client;
-    private LovesListFragment lovesSent;
-    private LovesListFragment lovesReceived;
-    private TweetsPagerAdapter fragmentAdapter;
+    private LovesPagerAdapter fragmentAdapter;
     private User user;
     private ViewPager viewPager;
-    private int nextPage = 0;
+    private int nextReceivedPage = 0;
+    private int nextSentPage = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,36 +37,48 @@ public class UserLoveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_love);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        fragmentAdapter = new TweetsPagerAdapter(getSupportFragmentManager(), UserLoveActivity.this);
+        fragmentAdapter = new LovesPagerAdapter(getSupportFragmentManager(), UserLoveActivity.this);
         viewPager.setAdapter(fragmentAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        lovesSent = (LovesListFragment) fragmentAdapter.getRegisteredFragment(0);
-        lovesReceived = (LovesListFragment) fragmentAdapter.getRegisteredFragment(1);
 
         client = LoveMonsterClient.getInstance();
         user = (User) getIntent().getParcelableExtra("user");
 
         logger = new Logger(UserLoveActivity.class);
 
-        getLoves(User.UserLoveAssociation.lovee);
-        getLoves(User.UserLoveAssociation.lover);
+        getSentLoves();
+        getReceivedLoves();
     }
 
-    private void getLoves(final User.UserLoveAssociation direction) {
+    private void getSentLoves() {
+        getLoves(User.UserLoveAssociation.lover, nextSentPage, 1);
+        nextSentPage += 1;
+    }
+
+    private void getReceivedLoves() {
+        getLoves(User.UserLoveAssociation.lovee, nextReceivedPage, 0);
+        nextReceivedPage += 1;
+    }
+
+    /*
+     * We send the index of the fragment instead of the fragment itself because we call this method
+     * from onCreate and the fragments apparently don't exist at that point.
+     *
+     * We should look into moving this into the fragment, somehow.
+     */
+    private void getLoves(final User.UserLoveAssociation direction, final int page, final int fragmentIndex) {
         client.retrieveRecentLoves(new LoveMonsterClient.LoveListResponseHandler() {
             @Override
             public void onSuccess(@NonNull List<Love> loves, int totalPages) {
                 for (Love love : loves) {
-                    if (direction == User.UserLoveAssociation.lovee || isReceivedLove(love)) {
-                        lovesReceived.addLove(love);
-                    } else if (direction == User.UserLoveAssociation.lover || isSentLove(love)) {
-                        lovesSent.addLove(love);
-                    } else {
+                    if (isUnexpectedLove(love)) {
                         logger.debug("Received unexpected love from " + love.lover.username + " to " + love.lovee.username);
+                        continue;
                     }
+                    LovesListFragment fragment = (LovesListFragment) fragmentAdapter.getRegisteredFragment(fragmentIndex);
+                    fragment.addLove(love);
                 }
             }
 
@@ -76,15 +87,19 @@ public class UserLoveActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Unable to retrieve loves", Toast.LENGTH_SHORT).show();
             }
 
+            private boolean isUnexpectedLove(Love love) {
+                return (direction == User.UserLoveAssociation.lovee && !isReceivedLove(love)) ||
+                        (direction == User.UserLoveAssociation.lover && !isSentLove(love));
+            }
+
             private boolean isReceivedLove(Love love) {
-                return love.lovee.username == UserLoveActivity.this.user.username;
+                return love.lovee.username.equals(UserLoveActivity.this.user.username);
             }
 
             private boolean isSentLove(Love love) {
-                return love.lover.username == UserLoveActivity.this.user.username;
+                return love.lover.username.equals(UserLoveActivity.this.user.username);
             }
-        }, nextPage, user, direction);
-        nextPage += 1;
+        }, page, user, direction);
     }
 
     @Override
@@ -109,11 +124,11 @@ public class UserLoveActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class TweetsPagerAdapter extends SmartFragmentStatePagerAdapter {
-        private String tabTitles[] = { "Sent", "Received" };
+    public class LovesPagerAdapter extends SmartFragmentStatePagerAdapter {
+        private String tabTitles[] = { "Received", "Sent" };
         private Context context;
 
-        public TweetsPagerAdapter(FragmentManager fm, Context context) {
+        public LovesPagerAdapter(FragmentManager fm, Context context) {
             super(fm);
             this.context = context;
         }
