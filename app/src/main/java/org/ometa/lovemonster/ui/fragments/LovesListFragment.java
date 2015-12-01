@@ -20,6 +20,7 @@ public class LovesListFragment extends Fragment {
     ArrayList<Love> lovesList;
     LoveArrayAdapter lovesArrayAdapter;
     ListView lvLoves;
+    private View noLovesMessage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,12 +39,27 @@ public class LovesListFragment extends Fragment {
         lvLoves = (ListView) view.findViewById(R.id.lvLoves);
         lvLoves.setAdapter(lovesArrayAdapter);
 
+        noLovesMessage = view.findViewById(R.id.lvLovesNoLoves);
+        toggleNoLoveMessage();
+
         // Setup handles to view objects here
         // etFoo = (EditText) view.findViewById(R.id.etFoo);
         return view;
     }
 
+    /**
+     * Toggles whether the no love message is displayed or not.
+     */
+    private void toggleNoLoveMessage() {
+        if (lovesArrayAdapter.isEmpty()) {
+            noLovesMessage.setVisibility(View.VISIBLE);
+        } else {
+            noLovesMessage.setVisibility(View.GONE);
+        }
+    }
+
     public void addLove(Love love) {
         lovesArrayAdapter.add(love);
+        toggleNoLoveMessage();
     }
 }

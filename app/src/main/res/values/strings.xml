@@ -2,8 +2,8 @@
     <string name="app_name">LoveMonster</string>
     <string name="title_activity_user_love">UserLoveActivity</string>
 
-    <string name="action_settings">Settings</string>
-
+    <!-- love list -->
+    <string name="fragment_love_list_no_love">No love here :(</string>
 
     <!-- Make Love Dialog -->
     <string name="fragment_make_love_dialog_title">Send Love</string>
