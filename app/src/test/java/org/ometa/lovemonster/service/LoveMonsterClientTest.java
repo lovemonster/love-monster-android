@@ -46,7 +46,7 @@ public class LoveMonsterClientTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        client = new LoveMonsterClient(mockResponseParser, mockAsyncHttpClient);
+        client = new LoveMonsterClient(mockResponseParser, mockAsyncHttpClient, "http://example.com/");
     }
 
     @Test
@@ -55,7 +55,7 @@ public class LoveMonsterClientTest {
 
         client.retrieveRecentLoves(mockLoveListResponseHandler, 77, new User("foo@example.com", "example_username"), null);
 
-        verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
+        verify(mockAsyncHttpClient).get(eq("http://example.com/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
 
         final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
         assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
@@ -70,7 +70,7 @@ public class LoveMonsterClientTest {
 
         client.retrieveRecentLoves(mockLoveListResponseHandler, 77, new User("foo@example.com", "example_username"), User.UserLoveAssociation.all);
 
-        verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
+        verify(mockAsyncHttpClient).get(eq("http://example.com/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
 
         final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
         assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
@@ -85,7 +85,7 @@ public class LoveMonsterClientTest {
 
         client.retrieveRecentLoves(mockLoveListResponseHandler, 77, new User("foo@example.com", "example_username"), User.UserLoveAssociation.lover);
 
-        verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
+        verify(mockAsyncHttpClient).get(eq("http://example.com/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
 
         final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
         assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
@@ -100,7 +100,7 @@ public class LoveMonsterClientTest {
 
         client.retrieveRecentLoves(mockLoveListResponseHandler, 77, new User("foo@example.com", "example_username"), User.UserLoveAssociation.lovee);
 
-        verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
+        verify(mockAsyncHttpClient).get(eq("http://example.com/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
 
         final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
         assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
@@ -115,7 +115,7 @@ public class LoveMonsterClientTest {
 
         client.retrieveRecentLoves(mockLoveListResponseHandler, 77, new User("foo@example.com", "example_username"));
 
-        verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
+        verify(mockAsyncHttpClient).get(eq("http://example.com/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
 
         final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
         assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
@@ -130,7 +130,7 @@ public class LoveMonsterClientTest {
 
         client.retrieveRecentLoves(mockLoveListResponseHandler, 77);
 
-        verify(mockAsyncHttpClient).get(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
+        verify(mockAsyncHttpClient).get(eq("http://example.com/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
 
         final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
         assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));
@@ -162,7 +162,7 @@ public class LoveMonsterClientTest {
     public void testRetrieveRecentLoves_RequestSucceeds_InvokesOnSuccess() throws JSONException {
         final ArgumentCaptor<JsonHttpResponseHandler> jsonHttpResponseHandlerArgumentCaptor = ArgumentCaptor.forClass(JsonHttpResponseHandler.class);
         final List<Love> expectedLoves = new ArrayList<>();
-        final JSONObject expectedJsonObject = new JSONObject("{\"pages\":7}");
+        final JSONObject expectedJsonObject = new JSONObject("{\"meta\":{\"total_pages\":7}}");
         when(mockResponseParser.parseLoveList(expectedJsonObject)).thenReturn(expectedLoves);
 
         client.retrieveRecentLoves(mockLoveListResponseHandler, 1);
@@ -173,10 +173,24 @@ public class LoveMonsterClientTest {
     }
 
     @Test
-    public void testRetrieveRecentLoves_RequestSucceeds_MissingPages_InvokesOnSuccessWithDefaultPages() {
+    public void testRetrieveRecentLoves_RequestSucceeds_MissingMeta_InvokesOnSuccessWithDefaultPages() throws JSONException {
         final ArgumentCaptor<JsonHttpResponseHandler> jsonHttpResponseHandlerArgumentCaptor = ArgumentCaptor.forClass(JsonHttpResponseHandler.class);
         final List<Love> expectedLoves = new ArrayList<>();
-        final JSONObject expectedJsonObject = new JSONObject();
+        final JSONObject expectedJsonObject = new JSONObject("{}");
+        when(mockResponseParser.parseLoveList(expectedJsonObject)).thenReturn(expectedLoves);
+
+        client.retrieveRecentLoves(mockLoveListResponseHandler, 1);
+        verify(mockAsyncHttpClient).get(anyString(), any(RequestParams.class), jsonHttpResponseHandlerArgumentCaptor.capture());
+        jsonHttpResponseHandlerArgumentCaptor.getValue().onSuccess(200, null, expectedJsonObject);
+
+        verify(mockLoveListResponseHandler).onSuccess(expectedLoves, 0);
+    }
+
+    @Test
+    public void testRetrieveRecentLoves_RequestSucceeds_MissingPages_InvokesOnSuccessWithDefaultPages() throws JSONException {
+        final ArgumentCaptor<JsonHttpResponseHandler> jsonHttpResponseHandlerArgumentCaptor = ArgumentCaptor.forClass(JsonHttpResponseHandler.class);
+        final List<Love> expectedLoves = new ArrayList<>();
+        final JSONObject expectedJsonObject = new JSONObject("{\"meta\":{}}");
         when(mockResponseParser.parseLoveList(expectedJsonObject)).thenReturn(expectedLoves);
 
         client.retrieveRecentLoves(mockLoveListResponseHandler, 1);
@@ -207,7 +221,7 @@ public class LoveMonsterClientTest {
 
         client.makeLove(love, mockLoveResponseHandler);
 
-        verify(mockAsyncHttpClient).post(eq("http://love.snc1/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
+        verify(mockAsyncHttpClient).post(eq("http://example.com/api/v1/loves"), requestParamsCaptor.capture(), any(JsonHttpResponseHandler.class));
 
         final Map<String, String> requestParams = parseParams(requestParamsCaptor.getValue());
         assertEquals("should set client id param", "androidapp", requestParams.get("clientId"));

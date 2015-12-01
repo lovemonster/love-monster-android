@@ -426,5 +426,7 @@
       }
     }
   ],
-  "pages": 444
+  "meta": {
+    "total_pages": 444
+  }
 }

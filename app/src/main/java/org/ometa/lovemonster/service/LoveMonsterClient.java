@@ -97,6 +97,11 @@ public class LoveMonsterClient {
     }
 
     /**
+     * The host to use to make requests. This field *must* have a trailing slash.
+     */
+    private final String host;
+
+    /**
      * The parser used to convert responses from the server into model objects.
      */
     @NonNull
@@ -114,7 +119,7 @@ public class LoveMonsterClient {
      * Defaults to use newly instantiated {@link ResponseParser} and {@link AsyncHttpClient} objects.
      */
     private LoveMonsterClient() {
-            this(new ResponseParser(), new AsyncHttpClient());
+            this(new ResponseParser(), new AsyncHttpClient(), "http://love.snc1/");
     }
 
     /**
@@ -125,19 +130,25 @@ public class LoveMonsterClient {
      *      the response parser to use to parse requests
      * @param asyncHttpClient
      *      the http client used to make requests
+     * @param host
+     *      the host to make requests to.
      * @throws IllegalArgumentException
-     *      if {@code responseParser} or {@code asyncHttpClient} are {@code null}
+     *      if {@code responseParser}, {@code asyncHttpClient}, or @{code host} are {@code null}
      */
-    protected LoveMonsterClient(@NonNull final ResponseParser responseParser, @NonNull final AsyncHttpClient asyncHttpClient) throws IllegalArgumentException {
+    protected LoveMonsterClient(@NonNull final ResponseParser responseParser, @NonNull final AsyncHttpClient asyncHttpClient, @NonNull final String host) throws IllegalArgumentException {
         if (responseParser == null) {
             throw new IllegalArgumentException("argument `responseParser` cannot be null");
         }
         if (asyncHttpClient == null) {
             throw new IllegalArgumentException("argument `asyncHttpClient` cannot be null");
         }
+        if (host == null) {
+            throw new IllegalArgumentException("argument `host` cannot be null");
+        }
 
         this.responseParser = responseParser;
         this.asyncHttpClient = asyncHttpClient;
+        this.host = host;
     }
 
     /**
@@ -218,14 +229,16 @@ public class LoveMonsterClient {
                 @Override
                 public void onSuccess(final int statusCode, final Header[] headers, final JSONObject response) {
                     final String responseBody;
-                    final int totalPages;
+                    int totalPages = 0;
 
                     if (response == null) {
                         responseBody = "null";
-                        totalPages = 0;
                     } else {
                         responseBody = response.toString();
-                        totalPages = response.optInt("pages", 0);
+                        final JSONObject metaJsonObject = response.optJSONObject("meta");
+                        if (metaJsonObject != null) {
+                            totalPages = metaJsonObject.optInt("total_pages", 0);
+                        }
                     }
 
                     logger.debug("method=retrieveRecentLoves url=" + url + " handler=onSuccess statusCode=" + statusCode + " response=" + responseBody);
@@ -342,7 +355,7 @@ public class LoveMonsterClient {
      *      the full url
      */
     private String buildUrl(final String path) {
-        return "http://love1-staging.snc1/" + path;
+        return host + path;
     }
 
     /**
