@@ -39,6 +39,9 @@ public class UserLoveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_love);
 
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_gradient));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         fragmentAdapter = new LovesPagerAdapter(getSupportFragmentManager(), UserLoveActivity.this);
         viewPager.setAdapter(fragmentAdapter);
@@ -132,16 +135,7 @@ public class UserLoveActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
+        finish();
         return super.onOptionsItemSelected(item);
     }
 

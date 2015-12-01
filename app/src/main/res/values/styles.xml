@@ -8,4 +8,31 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="loveListUserName">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textSize">@dimen/user_list_item_name_size</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="loveListReason">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textSize">@dimen/user_list_item_reason_size</item>
+        <item name="android:layout_margin">7dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="loveListMessage">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textSize">@dimen/user_list_item_message_size</item>
+        <item name="android:background">@drawable/rounded_accent_section</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:layout_marginLeft">7dp</item>
+        <item name="android:layout_marginRight">7dp</item>
+    </style>
+
 </resources>

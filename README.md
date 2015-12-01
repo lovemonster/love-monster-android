@@ -51,6 +51,7 @@ The following **optional** features are implemented:
 
 - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
 - [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
+- [Icon Finder](https://www.iconfinder.com/icons/285645/user_icon) - Open Source Icons
 
 ## License
 
