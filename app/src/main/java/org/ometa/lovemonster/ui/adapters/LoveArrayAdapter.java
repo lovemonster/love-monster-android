@@ -50,23 +50,32 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
 
         public void populate(final Love love) {
             tvLoverName.setText(displayNameFor(love.lover));
-            tvLoverName.setOnClickListener(new View.OnClickListener() {
+
+            final View.OnClickListener loverOnClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context, UserLoveActivity.class);
                     i.putExtra(User.PARCELABLE_KEY, love.lover);
                     context.startActivity(i);
                 }
-            });
+            };
+            ivSenderImage.setOnClickListener(loverOnClickListener);
+            tvLoverName.setOnClickListener(loverOnClickListener);
+
             tvLoveeName.setText(displayNameFor(love.lovee));
-            tvLoveeName.setOnClickListener(new View.OnClickListener() {
+
+            final View.OnClickListener loveeOnClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context, UserLoveActivity.class);
                     i.putExtra(User.PARCELABLE_KEY, love.lovee);
                     context.startActivity(i);
                 }
-            });
+            };
+            ivRecipientImage.setOnClickListener(loveeOnClickListener);
+            tvLoveeName.setOnClickListener(loveeOnClickListener);
+
+
             tvReason.setText(love.reason);
             if (love.hasMessage()) {
                 tvEllipsis.setVisibility(View.VISIBLE);
