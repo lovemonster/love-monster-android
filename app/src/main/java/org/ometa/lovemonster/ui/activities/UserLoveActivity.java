@@ -40,6 +40,7 @@ public class UserLoveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_love);
 
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_gradient));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         fragmentAdapter = new LovesPagerAdapter(getSupportFragmentManager(), UserLoveActivity.this);
@@ -130,6 +131,12 @@ public class UserLoveActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_user_love, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
     }
 
     private String titleFor(User user) {
