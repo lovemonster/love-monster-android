@@ -4,10 +4,11 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -132,6 +133,14 @@ public class MakeLoveDialogFragment extends DialogFragment {
                 .build();
 
         final EditText username = (EditText) dialog.getView().findViewById(R.id.fragment_make_love_dialog_lovee_username);
+        final EditText reason = (EditText) dialog.getView().findViewById(R.id.fragment_make_love_dialog_reason);
+
+        final MDButton sendButton = dialog.getActionButton(DialogAction.POSITIVE);
+        sendButton.setEnabled(false);
+
+        final LoveValidator loveValidator = new LoveValidator(reason, username, sendButton);
+        username.addTextChangedListener(loveValidator);
+        reason.addTextChangedListener(loveValidator);
 
         username.setText(getArguments().getString(LOVEE_USERNAME_ARGUMENT_NAME));
         username.requestFocus();
@@ -139,4 +148,34 @@ public class MakeLoveDialogFragment extends DialogFragment {
         return dialog;
     }
 
+    private static class LoveValidator implements TextWatcher {
+
+        private final EditText reasonField;
+        private final EditText loveeField;
+        private final MDButton sendButton;
+
+        LoveValidator(final EditText reasonField, final EditText loveeField, final MDButton sendButton) {
+            this.reasonField = reasonField;
+            this.loveeField = loveeField;
+            this.sendButton = sendButton;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            final boolean enteredReasonAndLoveeUsername =
+                    reasonField.getText().length() > 0
+                            && loveeField.getText().length() > 0;
+            sendButton.setEnabled(enteredReasonAndLoveeUsername);
+        }
+    }
 }
