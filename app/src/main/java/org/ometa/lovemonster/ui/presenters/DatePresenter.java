@@ -34,7 +34,7 @@ public class DatePresenter {
             return diffDays + "d";
         } else {
             SimpleDateFormat toDate = new SimpleDateFormat("MMM dd", Locale.ENGLISH);
-            return toDate.format(then);
+            return toDate.format(then.getTime());
         }
     }
 }
