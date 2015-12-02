@@ -42,7 +42,7 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
 
         private Context context;
         public ImageView ivSenderImage, ivRecipientImage;
-        public TextView tvLoverName, tvLoveeName, tvReason, tvEllipsis, tvMessage;
+        public TextView tvLoverName, tvLoveeName, tvReason, tvEllipsis, tvMessage, tvTimeAgo;
 
         public ViewHolder(Context context) {
             this.context = context;
@@ -75,8 +75,9 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
             ivRecipientImage.setOnClickListener(loveeOnClickListener);
             tvLoveeName.setOnClickListener(loveeOnClickListener);
 
-
+            tvTimeAgo.setText(love.timeAgo());
             tvReason.setText(love.reason);
+
             if (love.hasMessage()) {
                 tvEllipsis.setVisibility(View.VISIBLE);
                 tvMessage.setText(love.message);
@@ -124,6 +125,7 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
         viewHolder.tvReason = (TextView) view.findViewById(R.id.tvReason);
         viewHolder.tvEllipsis = (TextView) view.findViewById(R.id.tvElipsis);
         viewHolder.tvMessage = (TextView) view.findViewById(R.id.tvMessage);
+        viewHolder.tvTimeAgo = (TextView) view.findViewById(R.id.tvTimeAgo);
         viewHolder.tvEllipsis.setOnClickListener(new VisibilityToggler(viewHolder.tvMessage));
 
         view.setTag(viewHolder);

@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">0dp</dimen>
     <dimen name="activity_vertical_margin">0dp</dimen>
     <dimen name="avatar_size">40dp</dimen>
+    <dimen name="timeago_size">10sp</dimen>
     <dimen name="user_list_item_name_size">14sp</dimen>
     <dimen name="user_list_item_reason_size">16sp</dimen>
     <dimen name="user_list_item_message_size">12sp</dimen>
