@@ -3,6 +3,8 @@ package org.ometa.lovemonster.models;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.ometa.lovemonster.ui.presenters.DatePresenter;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -121,5 +123,14 @@ public class Love {
         }
 
         return message.replaceAll(" ", "") != "";
+    }
+
+    /**
+     * Return the relative "time ago" of the {@code Love}.
+     *
+     * @return a string of the relative "time ago" of the {@code Love}.
+     */
+    public String timeAgo() {
+        return DatePresenter.shortRelativeElapsedFrom(createdAt);
     }
 }
