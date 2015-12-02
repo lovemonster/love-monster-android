@@ -7,6 +7,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.ometa.lovemonster.Logger;
 import org.ometa.lovemonster.models.Love;
@@ -119,7 +120,7 @@ public class LoveMonsterClient {
      * Defaults to use newly instantiated {@link ResponseParser} and {@link AsyncHttpClient} objects.
      */
     private LoveMonsterClient() {
-            this(new ResponseParser(), new AsyncHttpClient(), "http://love.snc1/");
+            this(new ResponseParser(), new AsyncHttpClient(), "http://love-staging.snc1/");
     }
 
     /**
@@ -296,8 +297,9 @@ public class LoveMonsterClient {
 
         try {
             asyncHttpClient.post(url, params, new JsonHttpResponseHandler() {
+
                 @Override
-                public void onSuccess(final int statusCode, final Header[] headers, final JSONObject response) {
+                public void onSuccess(final int statusCode, final Header[] headers, final JSONArray response) {
                     final String responseBody;
                     if (response == null) {
                         responseBody = "null";
