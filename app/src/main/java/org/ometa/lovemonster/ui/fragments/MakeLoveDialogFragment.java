@@ -68,7 +68,7 @@ public class MakeLoveDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
         Log.d("foo", "create: " + getArguments().getString(LOVEE_USERNAME_ARGUMENT_NAME));
         final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                .iconRes(R.drawable.heart)
+                .iconRes(R.drawable.ic_heart)
                 .limitIconToDefaultSize()
                 .autoDismiss(false)
                 .title(R.string.fragment_make_love_dialog_title)

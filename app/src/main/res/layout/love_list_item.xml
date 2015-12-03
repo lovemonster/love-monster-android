@@ -27,9 +27,9 @@
 
     <ImageView
         android:id="@+id/ivHeart"
-        android:layout_width="@dimen/avatar_size"
-        android:layout_height="@dimen/avatar_size"
-        android:src="@drawable/heart" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_heart" />
 
     <ImageView
         android:id="@+id/ivRecipientImage"
