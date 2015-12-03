@@ -77,12 +77,12 @@ public class UserLoveActivity extends AppCompatActivity {
     }
 
     private void getSentLoves() {
-        getLoves(User.UserLoveAssociation.lover, nextSentPage, 0);
+        getLoves(User.UserLoveAssociation.lover, nextSentPage, LovesPagerAdapter.SENT_TAB_INDEX);
         nextSentPage += 1;
     }
 
     private void getReceivedLoves() {
-        getLoves(User.UserLoveAssociation.lovee, nextReceivedPage, 1);
+        getLoves(User.UserLoveAssociation.lovee, nextReceivedPage, LovesPagerAdapter.RECEIVED_TAB_INDEX);
         nextReceivedPage += 1;
     }
 
@@ -146,6 +146,9 @@ public class UserLoveActivity extends AppCompatActivity {
     }
 
     public class LovesPagerAdapter extends SmartFragmentStatePagerAdapter {
+        static final int SENT_TAB_INDEX = 0;
+        static final int RECEIVED_TAB_INDEX = 1;
+
         private String tabTitles[] = { getString(R.string.sent_tab_title), getString(R.string.received_tab_title) };
         private Context context;
 
@@ -156,7 +159,7 @@ public class UserLoveActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 0) {
+            if (position == SENT_TAB_INDEX) {
                 return new LovesListFragment();
             } else {
                 return new LovesListFragment();
