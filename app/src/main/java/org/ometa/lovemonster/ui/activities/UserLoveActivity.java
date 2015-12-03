@@ -40,6 +40,7 @@ public class UserLoveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_love);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white_24dp);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         fragmentAdapter = new LovesPagerAdapter(getSupportFragmentManager(), UserLoveActivity.this);
