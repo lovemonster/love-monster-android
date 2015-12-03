@@ -146,7 +146,7 @@ public class UserLoveActivity extends AppCompatActivity {
     }
 
     public class LovesPagerAdapter extends SmartFragmentStatePagerAdapter {
-        private String tabTitles[] = { "Sent", "Received" };
+        private String tabTitles[] = { getString(R.string.sent_tab_title), getString(R.string.received_tab_title) };
         private Context context;
 
         public LovesPagerAdapter(FragmentManager fm, Context context) {

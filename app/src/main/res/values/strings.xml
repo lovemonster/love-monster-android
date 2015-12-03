@@ -17,4 +17,7 @@
     <string name="fragment_make_love_dialog_send">Send</string>
     <string name="fragment_make_love_dialog_error_unable_to_send">Unable to send love. Please try again.</string>
     <string name="fragment_make_love_dialog_success">Love Sent!</string>
+
+    <string name="received_tab_title">Received</string>
+    <string name="sent_tab_title">Sent</string>
 </resources>
