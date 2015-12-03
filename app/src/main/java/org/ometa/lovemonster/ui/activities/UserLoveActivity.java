@@ -39,7 +39,6 @@ public class UserLoveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_love);
 
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_gradient));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);

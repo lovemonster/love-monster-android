@@ -29,8 +29,6 @@ public class LoveListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_love_list);
 
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_gradient));
-
         lovesList = (LovesListFragment) getSupportFragmentManager().findFragmentById(R.id.lovesList);
         client = LoveMonsterClient.getInstance();
 

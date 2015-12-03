@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3a0539</color>
-    <color name="colorPrimaryDark">#964185</color>
+    <color name="colorPrimary">#fedafd</color>
+    <color name="colorPrimaryDark">#fedafd</color>
     <color name="colorAccent">#964185</color>
+    <color name="actionBarTitleTextColorPrimary">#964185</color>
     <color name="colorAccentLight">#fedafd</color>
 </resources>
