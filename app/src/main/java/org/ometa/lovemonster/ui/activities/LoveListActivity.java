@@ -31,6 +31,7 @@ public class LoveListActivity extends AppCompatActivity {
 
         lovesList = (LovesListFragment) getSupportFragmentManager().findFragmentById(R.id.lovesList);
         client = LoveMonsterClient.getInstance();
+        setCurrentUser(client.getAuthenticatedUser());
 
         final FloatingActionButton makeLoveButton = (FloatingActionButton) findViewById(R.id.make_love);
         makeLoveButton.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +61,10 @@ public class LoveListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setCurrentUser(User currentUser) {
+        lovesList.setCurrentUser(currentUser);
     }
 
     private void getLoves() {

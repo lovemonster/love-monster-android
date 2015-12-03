@@ -20,14 +20,18 @@ import java.util.List;
  * Created by bschmeckpeper on 11/18/15.
  */
 public class LoveArrayAdapter extends ArrayAdapter<Love> {
+    public User currentUser;
+
     static class ViewHolder {
 
         private Context context;
         public ImageView ivSenderImage, ivRecipientImage;
         public TextView tvLoverName, tvLoveeName, tvReason, tvEllipsis, tvMessage, tvTimeAgo;
+        private User currentUser;
 
-        public ViewHolder(Context context) {
+        public ViewHolder(Context context, User currentUser) {
             this.context = context;
+            this.currentUser = currentUser;
         }
 
         public void populate(final Love love) {
@@ -77,8 +81,9 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
         }
     }
 
-    public LoveArrayAdapter(Context context, List<Love> loves) {
+    public LoveArrayAdapter(Context context, List<Love> loves, User currentUser) {
         super(context, android.R.layout.simple_list_item_1, loves);
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -97,7 +102,7 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
     private View inflateView(ViewGroup parent) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.love_list_item, parent, false);
 
-        final ViewHolder viewHolder = new ViewHolder(getContext());
+        final ViewHolder viewHolder = new ViewHolder(getContext(), currentUser);
         viewHolder.ivRecipientImage = (ImageView) view.findViewById(R.id.ivRecipientImage);
         viewHolder.ivSenderImage = (ImageView) view.findViewById(R.id.ivSenderImage);
         viewHolder.tvLoveeName = (TextView) view.findViewById(R.id.tvRecipientName);
