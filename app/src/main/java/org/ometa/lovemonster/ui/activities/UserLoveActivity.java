@@ -77,12 +77,12 @@ public class UserLoveActivity extends AppCompatActivity {
     }
 
     private void getSentLoves() {
-        getLoves(User.UserLoveAssociation.lover, nextSentPage, 1);
+        getLoves(User.UserLoveAssociation.lover, nextSentPage, 0);
         nextSentPage += 1;
     }
 
     private void getReceivedLoves() {
-        getLoves(User.UserLoveAssociation.lovee, nextReceivedPage, 0);
+        getLoves(User.UserLoveAssociation.lovee, nextReceivedPage, 1);
         nextReceivedPage += 1;
     }
 
@@ -146,7 +146,7 @@ public class UserLoveActivity extends AppCompatActivity {
     }
 
     public class LovesPagerAdapter extends SmartFragmentStatePagerAdapter {
-        private String tabTitles[] = { "Received", "Sent" };
+        private String tabTitles[] = { "Sent", "Received" };
         private Context context;
 
         public LovesPagerAdapter(FragmentManager fm, Context context) {
