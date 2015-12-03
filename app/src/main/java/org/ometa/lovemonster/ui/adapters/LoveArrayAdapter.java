@@ -20,6 +20,8 @@ import java.util.List;
  * Created by bschmeckpeper on 11/18/15.
  */
 public class LoveArrayAdapter extends ArrayAdapter<Love> {
+    public User currentUser;
+
     static class ViewHolder {
 
         private Context context;
@@ -75,10 +77,19 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
 
             return user.username;
         }
+
+        private void highlight(boolean highlightOn) {
+            if (highlightOn) {
+                tvReason.setText("HIGHLIGHT");
+            } else {
+                tvReason.setText("REASON");
+            }
+        }
     }
 
-    public LoveArrayAdapter(Context context, List<Love> loves) {
+    public LoveArrayAdapter(Context context, List<Love> loves, User currentUser) {
         super(context, android.R.layout.simple_list_item_1, loves);
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -90,8 +101,16 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
 
         ViewHolder viewHolder = (ViewHolder) convertView.getTag();
         viewHolder.populate(love);
-
+        highlight(convertView, love.lovee.equals(currentUser) || love.lover.equals(currentUser));
         return convertView;
+    }
+
+    private void highlight(View view, boolean highlightOn) {
+        if (highlightOn) {
+            view.setBackgroundResource(R.drawable.user_highlight);
+        } else {
+            view.setBackgroundResource(0);
+        }
     }
 
     private View inflateView(ViewGroup parent) {

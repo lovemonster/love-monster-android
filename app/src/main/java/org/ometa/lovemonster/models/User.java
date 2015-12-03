@@ -83,6 +83,20 @@ public class User implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User that = (User)o;
+        return this.username.equals(that.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.username.hashCode();
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }

@@ -51,7 +51,7 @@ public class UserLoveActivity extends AppCompatActivity {
 
         client = LoveMonsterClient.getInstance();
         user = (User) getIntent().getParcelableExtra(User.PARCELABLE_KEY);
-
+        setCurrentUser(client.getAuthenticatedUser());
         logger = new Logger(UserLoveActivity.class);
 
         getSentLoves();
@@ -74,6 +74,12 @@ public class UserLoveActivity extends AppCompatActivity {
                 makeLoveDialogFragment.show(getFragmentManager(), "makeLoveDialog");
             }
         });
+    }
+
+    private void setCurrentUser(User currentUser) {
+        if (!currentUser.equals(user)) {
+            fragmentAdapter.setCurrentUser(currentUser);
+        }
     }
 
     private void getSentLoves() {
@@ -151,19 +157,30 @@ public class UserLoveActivity extends AppCompatActivity {
 
         private String tabTitles[] = { getString(R.string.sent_tab_title), getString(R.string.received_tab_title) };
         private Context context;
+        private User currentUser;
 
         public LovesPagerAdapter(FragmentManager fm, Context context) {
             super(fm);
             this.context = context;
         }
 
+        public void setCurrentUser(User user) {
+            currentUser = user;
+        }
+
         @Override
         public Fragment getItem(int position) {
             if (position == SENT_TAB_INDEX) {
-                return new LovesListFragment();
+                return makeFragment();
             } else {
-                return new LovesListFragment();
+                return makeFragment();
             }
+        }
+
+        public LovesListFragment makeFragment() {
+            LovesListFragment fragment = new LovesListFragment();
+            fragment.setCurrentUser(currentUser);
+            return fragment;
         }
 
         @Override

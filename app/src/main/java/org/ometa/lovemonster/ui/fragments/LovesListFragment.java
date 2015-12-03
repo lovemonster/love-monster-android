@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import org.ometa.lovemonster.R;
 import org.ometa.lovemonster.models.Love;
+import org.ometa.lovemonster.models.User;
 import org.ometa.lovemonster.ui.adapters.LoveArrayAdapter;
 
 import java.util.ArrayList;
@@ -21,13 +22,14 @@ public class LovesListFragment extends Fragment {
     LoveArrayAdapter lovesArrayAdapter;
     ListView lvLoves;
     private View noLovesMessage;
+    private User currentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         lovesList = new ArrayList<>();
-        lovesArrayAdapter = new LoveArrayAdapter(getContext(), lovesList);
+        lovesArrayAdapter = new LoveArrayAdapter(getContext(), lovesList, currentUser);
     }
 
     @Override
@@ -55,6 +57,17 @@ public class LovesListFragment extends Fragment {
             noLovesMessage.setVisibility(View.VISIBLE);
         } else {
             noLovesMessage.setVisibility(View.GONE);
+        }
+    }
+
+    public void setCurrentUser(User user) {
+        // We sometimes get called before the array adapter has been created.  In those cases,
+        // cache the currentUser in an instance var and set it on the adapter when we finally
+        // get around to creating the adapter.
+        if (lovesArrayAdapter == null) {
+            currentUser = user;
+        } else {
+            lovesArrayAdapter.currentUser = user;
         }
     }
 
