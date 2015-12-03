@@ -51,20 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/user_info_line"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/tvElipsis"
-        android:layout_toStartOf="@+id/tvElipsis" />
-
-    <TextView
-        android:id="@+id/tvElipsis"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="..."
-        android:layout_below="@id/user_info_line"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="invisible" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/tvMessage"
@@ -75,8 +62,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="gone" />
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
