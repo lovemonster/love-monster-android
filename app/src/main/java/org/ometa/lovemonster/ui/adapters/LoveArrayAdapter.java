@@ -27,11 +27,9 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
         private Context context;
         public ImageView ivSenderImage, ivRecipientImage;
         public TextView tvLoverName, tvLoveeName, tvReason, tvEllipsis, tvMessage, tvTimeAgo;
-        private User currentUser;
 
-        public ViewHolder(Context context, User currentUser) {
+        public ViewHolder(Context context) {
             this.context = context;
-            this.currentUser = currentUser;
         }
 
         public void populate(final Love love) {
@@ -79,6 +77,14 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
 
             return user.username;
         }
+
+        private void highlight(boolean highlightOn) {
+            if (highlightOn) {
+                tvReason.setText("HIGHLIGHT");
+            } else {
+                tvReason.setText("REASON");
+            }
+        }
     }
 
     public LoveArrayAdapter(Context context, List<Love> loves, User currentUser) {
@@ -95,14 +101,22 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
 
         ViewHolder viewHolder = (ViewHolder) convertView.getTag();
         viewHolder.populate(love);
-
+        highlight(convertView, love.lovee.equals(currentUser) || love.lover.equals(currentUser));
         return convertView;
+    }
+
+    private void highlight(View view, boolean highlightOn) {
+        if (highlightOn) {
+            view.setBackgroundResource(R.drawable.user_highlight);
+        } else {
+            view.setBackgroundResource(0);
+        }
     }
 
     private View inflateView(ViewGroup parent) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.love_list_item, parent, false);
 
-        final ViewHolder viewHolder = new ViewHolder(getContext(), currentUser);
+        final ViewHolder viewHolder = new ViewHolder(getContext());
         viewHolder.ivRecipientImage = (ImageView) view.findViewById(R.id.ivRecipientImage);
         viewHolder.ivSenderImage = (ImageView) view.findViewById(R.id.ivSenderImage);
         viewHolder.tvLoveeName = (TextView) view.findViewById(R.id.tvRecipientName);
