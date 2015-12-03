@@ -143,7 +143,12 @@ public class MakeLoveDialogFragment extends DialogFragment {
         reason.addTextChangedListener(loveValidator);
 
         username.setText(getArguments().getString(LOVEE_USERNAME_ARGUMENT_NAME));
-        username.requestFocus();
+
+        if (username.getText().length() > 0) {
+            reason.requestFocus();
+        } else {
+            username.requestFocus();
+        }
 
         return dialog;
     }
