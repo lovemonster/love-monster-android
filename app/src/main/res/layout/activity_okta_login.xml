@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/okta_login_container">
+
+    <ImageView
+        android:id="@+id/okta_login_monster_graphic"
+        android:src="@drawable/creepy_love"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:scaleType="centerInside"
+        android:padding="0dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/okta_login_monster_graphic"
+        android:text="@string/app_name"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textColor="@color/actionBarTitleTextColorPrimary"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true" />
+
+    <org.ometa.lovemonster.ui.widget.PostInterceptingWebView
+        android:id="@+id/okta_login_web_view"
+        android:layout_below="@id/okta_login_monster_graphic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/okta_login_network_unavailable_message"
+        android:hint="@string/okta_login_network_unavailable_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:drawableBottom="@drawable/ic_signal_wifi_off_black_24dp"
+        android:layout_below="@id/okta_login_monster_graphic"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/okta_login_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/okta_login_monster_graphic"
+        android:visibility="gone"/>
+
+</RelativeLayout>

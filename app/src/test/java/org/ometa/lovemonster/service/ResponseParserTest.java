@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.ometa.lovemonster.Fixtures;
 import org.ometa.lovemonster.models.Love;
+import org.ometa.lovemonster.models.User;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class ResponseParserTest {
 
     @Before
     public void setUp() throws Exception {
-        responseParser = new ResponseParser();
+        responseParser = new ResponseParser(false);
     }
 
     @Test
@@ -89,5 +90,44 @@ public class ResponseParserTest {
 
         assertNull("empty string message should be set to null", loves.get(0).message);
         assertNull("blank string message should be set to null", loves.get(1).message);
+    }
+
+    @Test
+    public void testParseUser_AllFields_ReturnsFullUser() {
+        final User user = responseParser.parseUser(Fixtures.getJsonObject("v1_account.json"));
+
+        assertEquals("should set user email", "anthony@groupon.com", user.email);
+        assertEquals("should set name", "Anthony Caliendo", user.name);
+        assertEquals("should set user username", "anthony", user.username);
+    }
+
+    @Test
+    public void testParseUser_NoFields_ReturnsNull() {
+        final User user = responseParser.parseUser(Fixtures.getJsonObject("v1_account-all_blank.json"));
+
+        assertNull("should return null", user);
+    }
+
+    @Test
+    public void testParseUser_Null_ReturnsNull() {
+        final User user = responseParser.parseUser(null);
+
+        assertNull("should return null", user);
+    }
+
+    @Test
+    public void testParseUser_EmptyJson_ReturnsNull() throws JSONException {
+        final User user = responseParser.parseUser(new JSONObject("{}"));
+
+        assertNull("should return null", user);
+    }
+
+    @Test
+    public void testParseUser_OnlyRequiredFields_ReturnsUser() {
+        final User user = responseParser.parseUser(Fixtures.getJsonObject("v1_account-only_required.json"));
+
+        assertEquals("should set user email", "anthony@groupon.com", user.email);
+        assertNull("should not set name", user.name);
+        assertEquals("should set user username", "anthony", user.username);
     }
 }
