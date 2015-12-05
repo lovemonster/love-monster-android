@@ -35,6 +35,8 @@ import cz.msebera.android.httpclient.annotation.NotThreadSafe;
 @NotThreadSafe
 public class LoveMonsterClient {
 
+    public static final String API_URL = "http://love-staging.snc1/";
+
     /**
      * Handler for response callbacks from the {@link LoveMonsterClient} for calls which retrieve loves.
      */
@@ -120,7 +122,7 @@ public class LoveMonsterClient {
      * Defaults to use newly instantiated {@link ResponseParser} and {@link AsyncHttpClient} objects.
      */
     private LoveMonsterClient() {
-            this(new ResponseParser(), new AsyncHttpClient(), "http://love-staging.snc1/");
+            this(new ResponseParser(), new AsyncHttpClient(), API_URL);
     }
 
     /**

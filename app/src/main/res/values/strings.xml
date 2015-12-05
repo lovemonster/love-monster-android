@@ -20,4 +20,7 @@
 
     <string name="received_tab_title">Received</string>
     <string name="sent_tab_title">Sent</string>
+
+    <!-- Internet Access -->
+    <string name="check_internet">Please check your internet connection.</string>
 </resources>

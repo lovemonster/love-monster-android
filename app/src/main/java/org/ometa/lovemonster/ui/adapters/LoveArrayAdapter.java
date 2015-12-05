@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class LoveArrayAdapter extends ArrayAdapter<Love> {
     public User currentUser;
+    public User subjectUser;
 
     static class ViewHolder {
 
@@ -103,6 +104,22 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
         viewHolder.populate(love);
         highlight(convertView, love.lovee.equals(currentUser) || love.lover.equals(currentUser));
         return convertView;
+    }
+
+    // method to add a list of loves to the beginning of the array adapter
+    public void addAllToBeginning(List<Love> loves) {
+        for (Love love : loves) {
+            this.insert(love, 0);
+        }
+        notifyDataSetChanged();
+    }
+
+    // method to add a list of loves to the end of the array adapter
+    public void addAllToEnd(List<Love> loves) {
+        for (Love love : loves) {
+            this.add(love);
+        }
+        notifyDataSetChanged();
     }
 
     private void highlight(View view, boolean highlightOn) {

@@ -3,7 +3,6 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         applicationId "org.ometa.lovemonster"
         minSdkVersion 16
@@ -17,15 +16,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     sourceSets {
         unitTests {
             res.srcDirs = ['src/test/resources']
         }
     }
-
     testOptions {
         unitTests.returnDefaultValues = true
+    }
+    productFlavors {
     }
 }
 
@@ -35,16 +34,20 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
     testCompile 'junit:junit:4.12'
     testCompile 'org.json:json:20150729'
     testCompile 'org.mockito:mockito-core:1.10.19'
+    compile 'com.android.support:appcompat-v7:23.1.1'
 
-    compile 'com.android.support:appcompat-v7:23.1.0'
+    // async http
     compile 'com.loopj.android:android-async-http:1.4.9'
-    compile 'com.android.support:design:23.1.0'
 
+    // material design
+    compile 'com.android.support:design:23.1.0'
     compile('com.github.afollestad.material-dialogs:core:0.8.5.0@aar') {
         transitive = true
     }
+
+    // tabs
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 }

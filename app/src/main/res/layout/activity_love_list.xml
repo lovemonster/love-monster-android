@@ -13,7 +13,7 @@
     android:id="@+id/love_list_activity">
 
     <fragment
-        android:name="org.ometa.lovemonster.ui.fragments.LovesListFragment"
+        android:name="org.ometa.lovemonster.ui.fragments.HomeLoveFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/lovesList" />
@@ -27,4 +27,5 @@
         android:layout_height="wrap_content"
         app:layout_anchor="@id/love_list_activity"
         app:layout_anchorGravity="bottom|right|end" />
+
 </android.support.design.widget.CoordinatorLayout>
