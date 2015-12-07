@@ -30,13 +30,13 @@ public class UserLoveFragment extends LovesListFragment {
 
     @Override
     protected void onSwipeUp(int page) {
-        client.retrieveRecentLoves(getSwipeUpHandler(), page, subjectUser);
+        client.retrieveRecentLoves(getSwipeUpHandler(), page, subjectUser, direction);
     }
 
     @Override
     protected void onSwipeDown() {
         lovesList.clear();
-        client.retrieveRecentLoves(getSwipeDownHandler(), 1, subjectUser);
+        client.retrieveRecentLoves(getSwipeDownHandler(), 1, subjectUser, direction);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class UserLoveFragment extends LovesListFragment {
 
     @Override
     protected void initialLoadWithInternet() {
-        client.retrieveRecentLoves(getSwipeUpHandler(), 1, subjectUser);
+        client.retrieveRecentLoves(getSwipeUpHandler(), 1, subjectUser, direction);
     }
 
 
