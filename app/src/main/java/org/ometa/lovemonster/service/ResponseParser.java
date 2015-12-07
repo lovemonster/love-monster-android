@@ -45,6 +45,17 @@ class ResponseParser {
      */
     private static final Map<String, User> userCache = new EntityCache<>(25);
 
+
+    private final boolean useUserCache;
+
+    ResponseParser() {
+        this(true);
+    }
+
+    ResponseParser(boolean useUserCache) {
+        this.useUserCache = useUserCache;
+    }
+
     /**
      * Parses a list of {@link Love} objects from a json response payload. May return an empty list,
      * but will not return null. Handles null inputs as well as malformed json.
@@ -127,7 +138,7 @@ class ResponseParser {
      * @return
      *      the parsed {@link User}, or null if it cannot be parsed
      */
-    private User parseUser(@Nullable final JSONObject userJson) {
+    User parseUser(@Nullable final JSONObject userJson) {
         if (userJson == null) {
             return null;
         }
@@ -137,9 +148,13 @@ class ResponseParser {
             return null;
         }
 
-        User user = userCache.get(email);
-        if (user != null) {
-            return user;
+        User user;
+
+        if (useUserCache) {
+            user = userCache.get(email);
+            if (user != null) {
+                return user;
+            }
         }
 
         final String username = parseString(userJson, "username");

@@ -1,8 +1,14 @@
 <resources>
-    <string name="app_name">LoveMonster</string>
+    <string name="app_name">Love Monster</string>
     <string name="title_activity_user_love">UserLoveActivity</string>
 
+    <!-- okta authentication -->
+    <string name="okta_login_title">Love Monster</string>
+    <string name="okta_login_network_unavailable_message">Unable to connect to a network. Please check your settings and try again.</string>
+    <string name="okta_login_error_message">Unable to log in!</string>
+
     <!-- love list activity -->
+    <string name="love_list_title">Recent Love</string>
     <string name="menu_love_list_user_avatar_title">Your Loves</string>
 
     <!-- love list fragment -->

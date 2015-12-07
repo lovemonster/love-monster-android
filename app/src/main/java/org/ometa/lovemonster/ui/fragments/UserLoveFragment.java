@@ -1,5 +1,6 @@
 package org.ometa.lovemonster.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
@@ -8,6 +9,7 @@ import org.ometa.lovemonster.Logger;
 import org.ometa.lovemonster.models.Love;
 import org.ometa.lovemonster.models.User;
 import org.ometa.lovemonster.service.LoveMonsterClient;
+import org.ometa.lovemonster.ui.activities.LoveListActivity;
 import org.ometa.lovemonster.ui.adapters.LoveArrayAdapter;
 
 import java.util.List;
@@ -87,6 +89,13 @@ public class UserLoveFragment extends LovesListFragment {
             @Override
             public void onFail() {
                 Toast.makeText(getParentFragment().getContext(), "Unable to retrieve loves", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationFailure() {
+                final Intent intent = new Intent(getActivity(), LoveListActivity.class);
+                getActivity().startActivity(intent);
+                getActivity().finish();
             }
 
             private boolean isUnexpectedLove(Love love) {
