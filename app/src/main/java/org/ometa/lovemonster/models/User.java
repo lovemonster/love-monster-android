@@ -58,6 +58,11 @@ public class User implements Parcelable {
     public final List<Love> sentLoves;
 
     /**
+     * The URL for the profile image.
+     */
+    public String profileImageUrl;
+
+    /**
      * Instantiates a {@code User} instance with the minimum required fields.
      *
      * @param email
@@ -129,4 +134,5 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
 }

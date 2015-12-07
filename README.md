@@ -23,11 +23,9 @@ The following **required** functionality is completed:
   click Send to post the love to the API
 * [x] Click on a user to render a user detail page, showing recently sent
   and received loves.
-* [] Settings page to specify connection information that gets stored in
-  User Preferences keystore
 * [x] The user can click an icon representing themselves to see a
   rendering of their own activity.
-* [] Authentication with Okta
+* [x] Authentication with Okta
 
 The following **optional** features are implemented:
 * [x] display time ago and the optional message for a love
@@ -35,7 +33,9 @@ The following **optional** features are implemented:
 * [x] Infinite scrolling of loves, fetching more from the API
 * [x] Swiping down refreshes the love list to include new loves
 * [] Allow input and rendering of github emoticons like the main web app does
-* [] Render users' profile pictures
+* [X] Render users' profile pictures
+* [] Settings page to specify connection information that gets stored in
+  User Preferences keystore
 * [] Render the "likes" functionality, showing which users that like a particular love.
 * [] Allow the user to Like a love.
 * [] Add a dialog showing extra detail about a Love that allows extra activities (liking a love, showing the reason, etc)

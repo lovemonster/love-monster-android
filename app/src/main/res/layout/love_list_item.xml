@@ -16,6 +16,9 @@
         android:id="@+id/ivSenderImage"
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size"
+        android:layout_margin="5dp"
+        android:layout_marginTop="2dp"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_default_user_avatar" />
 
     <TextView
@@ -35,6 +38,9 @@
         android:id="@+id/ivRecipientImage"
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size"
+        android:layout_margin="5dp"
+        android:layout_marginTop="2dp"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_default_user_avatar" />
 
     <TextView

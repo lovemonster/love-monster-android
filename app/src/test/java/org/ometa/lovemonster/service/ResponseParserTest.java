@@ -22,7 +22,7 @@ public class ResponseParserTest {
 
     @Before
     public void setUp() throws Exception {
-        responseParser = new ResponseParser(false);
+        responseParser = new ResponseParser(false, "example.com/%s.png");
     }
 
     @Test
@@ -64,9 +64,11 @@ public class ResponseParserTest {
         assertEquals("should set lovee email", "jjenkins@groupon.com", fullyFilledOutLove.lovee.email);
         assertEquals("should set lovee name", "Jonathan Jenkins", fullyFilledOutLove.lovee.name);
         assertEquals("should set lovee username", "jjenkins", fullyFilledOutLove.lovee.username);
+        assertEquals("should set lovee profile image url", "example.com/jjenkins.png", fullyFilledOutLove.lovee.profileImageUrl);
         assertEquals("should set lover email", "jepinho@groupon.com", fullyFilledOutLove.lover.email);
         assertEquals("should set lover name", "Jesse Pinho", fullyFilledOutLove.lover.name);
         assertEquals("should set lover username", "jepinho", fullyFilledOutLove.lover.username);
+        assertEquals("should set lover profile image url", "example.com/jepinho.png", fullyFilledOutLove.lover.profileImageUrl);
 
         final Love minimallyFilledOutLove = loves.get(24);
         assertEquals("should set the reason", "New Yooooooooooooork", minimallyFilledOutLove.reason);
@@ -76,9 +78,11 @@ public class ResponseParserTest {
         assertEquals("should set lovee email", "aderly@groupon.com", minimallyFilledOutLove.lovee.email);
         assertNull("should set lovee nam to null when missinge", minimallyFilledOutLove.lovee.name);
         assertEquals("should set lovee username", "aderly", minimallyFilledOutLove.lovee.username);
+        assertEquals("should set lovee profile image url", "example.com/aderly.png", minimallyFilledOutLove.lovee.profileImageUrl);
         assertEquals("should set lover email", "qnouffert@groupon.com", minimallyFilledOutLove.lover.email);
         assertNull("should set lover name to null when missing", minimallyFilledOutLove.lover.name);
         assertEquals("should set lover username", "qnouffert", minimallyFilledOutLove.lover.username);
+        assertEquals("should set lover profile image url", "example.com/qnouffert.png", minimallyFilledOutLove.lover.profileImageUrl);
     }
 
     @Test
@@ -99,6 +103,7 @@ public class ResponseParserTest {
         assertEquals("should set user email", "anthony@groupon.com", user.email);
         assertEquals("should set name", "Anthony Caliendo", user.name);
         assertEquals("should set user username", "anthony", user.username);
+        assertEquals("should set user profile image url", "example.com/anthony.png", user.profileImageUrl);
     }
 
     @Test
@@ -129,5 +134,6 @@ public class ResponseParserTest {
         assertEquals("should set user email", "anthony@groupon.com", user.email);
         assertNull("should not set name", user.name);
         assertEquals("should set user username", "anthony", user.username);
+        assertEquals("should set user profile image url", "example.com/anthony.png", user.profileImageUrl);
     }
 }
