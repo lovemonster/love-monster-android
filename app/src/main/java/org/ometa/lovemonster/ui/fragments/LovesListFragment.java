@@ -1,5 +1,6 @@
 package org.ometa.lovemonster.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import org.ometa.lovemonster.models.Love;
 import org.ometa.lovemonster.models.User;
 import org.ometa.lovemonster.service.LoveMonsterClient;
 import org.ometa.lovemonster.service.NetworkHelper;
+import org.ometa.lovemonster.ui.activities.LoveListActivity;
 import org.ometa.lovemonster.ui.adapters.LoveArrayAdapter;
 import org.ometa.lovemonster.ui.listeners.EndlessScrollListener;
 
@@ -152,6 +154,13 @@ public abstract class LovesListFragment extends Fragment {
             public void onFail() {
                 Toast.makeText(getContext(), "Unable to retrieve loves", Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void onAuthenticationFailure() {
+                final Intent intent = new Intent(getActivity(), LoveListActivity.class);
+                getActivity().startActivity(intent);
+                getActivity().finish();
+            }
         };
     }
 
@@ -173,6 +182,13 @@ public abstract class LovesListFragment extends Fragment {
             @Override
             public void onFail() {
                 Toast.makeText(getContext(), "Unable to retrieve loves", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationFailure() {
+                final Intent intent = new Intent(getActivity(), LoveListActivity.class);
+                getActivity().startActivity(intent);
+                getActivity().finish();
             }
         };
     }

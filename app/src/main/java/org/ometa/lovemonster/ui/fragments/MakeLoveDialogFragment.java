@@ -2,6 +2,7 @@ package org.ometa.lovemonster.ui.fragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
@@ -22,6 +23,7 @@ import org.ometa.lovemonster.R;
 import org.ometa.lovemonster.models.Love;
 import org.ometa.lovemonster.models.User;
 import org.ometa.lovemonster.service.LoveMonsterClient;
+import org.ometa.lovemonster.ui.activities.LoveListActivity;
 
 import java.util.List;
 
@@ -125,6 +127,13 @@ public class MakeLoveDialogFragment extends DialogFragment {
                                 message.setEnabled(true);
                                 isPrivate.setEnabled(true);
                                 sendButton.setEnabled(true);
+                            }
+
+                            @Override
+                            public void onAuthenticationFailure() {
+                                final Intent intent = new Intent(getActivity(), LoveListActivity.class);
+                                getActivity().startActivity(intent);
+                                getActivity().finish();
                             }
                         });
                     }

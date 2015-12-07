@@ -1,10 +1,7 @@
 package org.ometa.lovemonster.ui.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -22,7 +19,7 @@ import org.ometa.lovemonster.R;
 import org.ometa.lovemonster.service.LoveMonsterClient;
 import org.ometa.lovemonster.service.NetworkHelper;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -105,6 +102,11 @@ public class OktaLoginActivity extends AppCompatActivity {
                                 errorMessage = errorMessages.get(0);
                             }
                             onNetworkError(errorMessage);
+                        }
+
+                        @Override
+                        public void onAuthenticationFailure() {
+                            onFail(new ArrayList<String>());
                         }
                     });
 

@@ -2,6 +2,7 @@ package org.ometa.lovemonster.service;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.MalformedJsonException;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -43,6 +44,7 @@ public class LoveMonsterClient {
      * Handler for response callbacks from the {@link LoveMonsterClient} for calls which retrieve loves.
      */
     public interface LoveListResponseHandler {
+
         /**
          * Invoked when the request successfully completes.  The passed loves may be empty, but cannot
          * be null.
@@ -56,12 +58,18 @@ public class LoveMonsterClient {
          * Handler when a request fails.
          */
         void onFail();
+
+        /**
+         * Handler for when authentication has failed or the session has expired.
+         */
+        void onAuthenticationFailure();
     }
 
     /**
      * Handler for response callbacks from the {@link LoveMonsterClient} for calls which return a single love.
      */
     public interface LoveResponseHandler {
+
         /**
          * Invoked when the request successfully completes.  The passed love will not be null.
          *
@@ -77,9 +85,16 @@ public class LoveMonsterClient {
          *      the error messages from the server and/or exception messages
          */
         void onFail(@NonNull List<String> errorMessages);
+
+        /**
+         * Handler for when authentication has failed or the session has expired.
+         */
+        void onAuthenticationFailure();
     }
 
     public interface AuthenticationHandler {
+
+
         /**
          * Invoked when authentication succeeds.
          */
@@ -92,6 +107,11 @@ public class LoveMonsterClient {
          *      the error messages from the server and/or exception messages
          */
         void onFail(List<String> errorMessages);
+
+        /**
+         * Handler for when authentication has failed or the session has expired.
+         */
+        void onAuthenticationFailure();
     }
 
     /**
@@ -265,6 +285,11 @@ public class LoveMonsterClient {
                     void onFailure(@NonNull final List<String> errorMessages) {
                         loveListResponseHandler.onFail();
                     }
+
+                    @Override
+                    public void onAuthenticationFailure() {
+                        loveListResponseHandler.onAuthenticationFailure();
+                    }
                 }
         );
     }
@@ -305,6 +330,11 @@ public class LoveMonsterClient {
             @Override
             void onFailure(@NonNull final List<String> errorMessages) {
                 loveResponseHandler.onFail(errorMessages);
+            }
+
+            @Override
+            void onAuthenticationFailure() {
+                loveResponseHandler.onAuthenticationFailure();
             }
         });
     }
@@ -358,6 +388,11 @@ public class LoveMonsterClient {
                     @Override
                     void onFailure(@NonNull final List<String> errorMessages) {
                         authenticationHandler.onFail(errorMessages);
+                    }
+
+                    @Override
+                    void onAuthenticationFailure() {
+                        authenticationHandler.onAuthenticationFailure();
                     }
                 }
         );
@@ -480,6 +515,12 @@ public class LoveMonsterClient {
          */
         abstract void onFailure(@NonNull final List<String> errorMessages);
 
+        /**
+         * Handler called when authentication has failed. Typically, this should be used to fire the
+         * login intent.
+         */
+        abstract void onAuthenticationFailure();
+
         @Override
         public void onSuccess(final int statusCode, final Header[] headers, final JSONArray response) {
             handleSuccess(statusCode, response);
@@ -556,6 +597,10 @@ public class LoveMonsterClient {
          *      the thrown error. may be null
          */
         private void handleFailure(final int statusCode, @Nullable final Object responseObject, @Nullable final Throwable throwable) {
+            if (isExpiredOktaCredentials(statusCode, throwable)) {
+                onAuthenticationFailure();
+                return;
+            }
             final String response;
             final List<String> errorMessages = new ArrayList<>();
 
@@ -581,6 +626,20 @@ public class LoveMonsterClient {
             );
 
             onFailure(errorMessages);
+        }
+
+        /**
+         * Returns true if the response represents expired okta credentials.
+         *
+         * @param statusCode
+         *      the status code from the response
+         * @param throwable
+         *      the exception thrown
+         * @return
+         *      true if the failure represents expired okta credentials, or false otherwise
+         */
+        private boolean isExpiredOktaCredentials(final int statusCode, final Throwable throwable) {
+            return statusCode == 200 && throwable instanceof MalformedJsonException;
         }
     }
 }
