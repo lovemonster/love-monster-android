@@ -38,7 +38,8 @@ import cz.msebera.android.httpclient.message.BasicHeader;
 @NotThreadSafe
 public class LoveMonsterClient {
 
-    public static final String API_URL = "love-staging.groupondev.com";
+    private static final String API_URL = "love-staging.groupondev.com";
+    private static final String USER_AVATAR_TEMPLATE = "https://skynet.groupon.com/people/%s/avatar/40.png";
 
     /**
      * Handler for response callbacks from the {@link LoveMonsterClient} for calls which retrieve loves.
@@ -162,7 +163,7 @@ public class LoveMonsterClient {
      * Defaults to use newly instantiated {@link ResponseParser} and {@link AsyncHttpClient} objects.
      */
     private LoveMonsterClient() {
-            this(new ResponseParser(), new AsyncHttpClient(), API_URL);
+            this(new ResponseParser(USER_AVATAR_TEMPLATE), new AsyncHttpClient(), API_URL);
     }
 
     /**

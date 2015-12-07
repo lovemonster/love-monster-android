@@ -34,10 +34,13 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
     testCompile 'junit:junit:4.12'
     testCompile 'org.json:json:20150729'
     testCompile 'org.mockito:mockito-core:1.10.19'
+
     compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     // async http
     compile 'com.loopj.android:android-async-http:1.4.9'

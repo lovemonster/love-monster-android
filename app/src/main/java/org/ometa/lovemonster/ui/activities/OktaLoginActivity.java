@@ -50,6 +50,7 @@ public class OktaLoginActivity extends AppCompatActivity {
             networkUnavailableMessage.setVisibility(View.VISIBLE);
         }
 
+        webView.setVisibility(View.GONE);
         webView.setWebViewClient(new OktaAuthenticationWebView(this));
         webView.getSettings().setJavaScriptEnabled(true);
 
@@ -79,8 +80,6 @@ public class OktaLoginActivity extends AppCompatActivity {
 
         @Override
         public void onPageFinished(final WebView view, final String url) {
-            progressBar.setVisibility(View.GONE);
-
             if (url.startsWith(LoveMonsterClient.getInstance().getRootUrl())) {
                 final String rawCookies = CookieManager.getInstance().getCookie(url);
                 if (rawCookies != null) {
@@ -112,6 +111,9 @@ public class OktaLoginActivity extends AppCompatActivity {
 
 
                 }
+            } else {
+                webView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
 
             super.onPageFinished(view, url);

@@ -2,6 +2,7 @@ package org.ometa.lovemonster.ui.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.ometa.lovemonster.R;
 import org.ometa.lovemonster.models.Love;
 import org.ometa.lovemonster.models.User;
 import org.ometa.lovemonster.ui.activities.UserLoveActivity;
+import org.ometa.lovemonster.ui.widget.RoundedRectangleTransformation;
 
 import java.util.List;
 
@@ -34,6 +38,20 @@ public class LoveArrayAdapter extends ArrayAdapter<Love> {
         }
 
         public void populate(final Love love) {
+            Picasso.with(context)
+                    .load(Uri.parse(love.lover.profileImageUrl))
+                    .placeholder(R.drawable.loading)
+                    .error(R.drawable.ic_default_user_avatar)
+                    .transform(new RoundedRectangleTransformation(10, 1))
+                    .into(ivSenderImage);
+
+            Picasso.with(context)
+                    .load(Uri.parse(love.lovee.profileImageUrl))
+                    .placeholder(R.drawable.loading)
+                    .error(R.drawable.ic_default_user_avatar)
+                    .transform(new RoundedRectangleTransformation(10, 1))
+                    .into(ivRecipientImage);
+
             tvLoverName.setText(displayNameFor(love.lover));
 
             final View.OnClickListener loverOnClickListener = new View.OnClickListener() {

@@ -48,12 +48,18 @@ class ResponseParser {
 
     private final boolean useUserCache;
 
-    ResponseParser() {
-        this(true);
+    /**
+     * The format to use when generating user profile image urls.
+     */
+    private final String userProfileImageUrlFormat;
+
+    ResponseParser(final String userProfileImageUrlFormat) {
+        this(true, userProfileImageUrlFormat);
     }
 
-    ResponseParser(boolean useUserCache) {
+    ResponseParser(final boolean useUserCache, final String userProfileImageUrlFormat) {
         this.useUserCache = useUserCache;
+        this.userProfileImageUrlFormat = userProfileImageUrlFormat;
     }
 
     /**
@@ -165,6 +171,7 @@ class ResponseParser {
         user = new User(email, username);
 
         user.name = parseString(userJson, "name");
+        user.profileImageUrl = String.format(userProfileImageUrlFormat, username);
 
         userCache.put(email, user);
 
