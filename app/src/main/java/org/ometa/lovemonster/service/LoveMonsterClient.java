@@ -93,6 +93,12 @@ public class LoveMonsterClient {
         void onAuthenticationFailure();
     }
 
+    public interface UserLookupResponseHandler {
+        void onUserExists(@NonNull User user);
+        void onUserNotFound();
+        void onFail(@NonNull List<String> errorMessages);
+        void onAuthenticationFailure();
+    }
     public interface AuthenticationHandler {
 
 
@@ -340,6 +346,31 @@ public class LoveMonsterClient {
         });
     }
 
+    public void getUserFromUsername(@NonNull String username, @NonNull final UserLookupResponseHandler responseHandler) {
+        final URIBuilder url = buildUrl("/api/v1/users/" + username);
+
+        httpRemoter.get(url, new JSONObjectHttpResponseHandler() {
+            @Override
+            void onSuccess(@Nullable JSONObject response) {
+                User user = responseParser.parseUser(response);
+                responseHandler.onUserExists(user);
+            }
+
+            @Override
+            void onFailure(@NonNull List<String> errorMessages) {
+                if (errorMessages.size() == 1 && errorMessages.get(0).equals("Not Found")) {
+                    responseHandler.onUserNotFound();
+                } else {
+                    responseHandler.onFail(errorMessages);
+                }
+            }
+
+            @Override
+            void onAuthenticationFailure() {
+                responseHandler.onAuthenticationFailure();
+            }
+        });
+    }
     /**
      * Returns the authenticated {@link User} for this client. This method will return {@code null}
      * if there is not yet an authenticated user.
