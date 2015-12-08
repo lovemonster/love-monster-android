@@ -30,6 +30,7 @@ import java.util.List;
 public class LoveListActivity extends AppCompatActivity {
 
     private static final Logger logger = new Logger(LoveListActivity.class);
+    private boolean searchInProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +70,17 @@ public class LoveListActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(final String query) {
                 logger.debug("Search for " + query);
+                if (searchInProgress) {
+                    logger.debug("Search already in progress");
+                    // I can't find documentation on what the return value of this method does.
+                    return false;
+                }
+                searchInProgress = true;
                 LoveMonsterClient client = LoveMonsterClient.getInstance();
                 client.getUserFromUsername(query, new LoveMonsterClient.UserLookupResponseHandler() {
                     @Override
                     public void onUserExists(final User user) {
+                        searchInProgress = false;
                         final Intent intent = new Intent(LoveListActivity.this, UserLoveActivity.class);
                         intent.putExtra(User.PARCELABLE_KEY, user);
                         startActivity(intent);
@@ -80,16 +88,19 @@ public class LoveListActivity extends AppCompatActivity {
 
                     @Override
                     public void onUserNotFound() {
+                        searchInProgress = false;
                         Toast.makeText(getApplicationContext(), "Cannot find user " + query, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFail(final List<String> errorMessages) {
+                        searchInProgress = false;
                         Toast.makeText(getApplicationContext(), "Network failure", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onAuthenticationFailure() {
+                        searchInProgress = false;
                     }
                 });
 
