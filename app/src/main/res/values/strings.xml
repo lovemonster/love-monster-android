@@ -12,7 +12,7 @@
     <string name="menu_love_list_user_avatar_title">Your Loves</string>
 
     <!-- love list fragment -->
-    <string name="fragment_love_list_no_love">No love here :(</string>
+    <string name="fragment_love_list_no_love">No love found.</string>
 
     <!-- Make Love Dialog -->
     <string name="fragment_make_love_dialog_title">Send Love</string>

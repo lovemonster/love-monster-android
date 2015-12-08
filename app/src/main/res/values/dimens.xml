@@ -7,4 +7,5 @@
     <dimen name="user_list_item_name_size">14sp</dimen>
     <dimen name="user_list_item_reason_size">16sp</dimen>
     <dimen name="user_list_item_message_size">12sp</dimen>
+    <dimen name="no_love_found_size">16sp</dimen>
 </resources>

@@ -44,7 +44,6 @@ public class UserLoveFragment extends LovesListFragment {
     @Override
     protected void initialLoadNoInternet(LoveArrayAdapter lovesArrayAdapter) {
         // todo: load existing loves from sqlite db
-        Toast.makeText(getContext(), "userlovefragment: initial load no inet", Toast.LENGTH_SHORT).show();
     }
 
     @Override
