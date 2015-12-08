@@ -76,7 +76,11 @@ public abstract class LovesListFragment extends Fragment {
         viewHolder.lvLoves.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
-                onSwipeUp(page);
+                if (NetworkHelper.isUp(getActivity())) {
+                    onSwipeUp(page);
+                } else {
+                    Toast.makeText(getActivity(), R.string.check_internet, Toast.LENGTH_SHORT).show();
+                }
                 return true;
             }
         });

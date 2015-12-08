@@ -58,4 +58,9 @@
         <item name="android:layout_marginRight">7dp</item>
     </style>
 
+    <style name="noLovesFound">
+        <item name="android:textSize">@dimen/no_love_found_size</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
 </resources>

@@ -4,28 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/lvLovesNoLoves"
+        android:text="@string/fragment_love_list_no_love"
+        style="@style/noLovesFound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
+
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ListView
             android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/lvLoves"
             android:layout_gravity="center_horizontal" />
 
-        <TextView
-            android:id="@+id/lvLovesNoLoves"
-            android:text="@string/fragment_love_list_no_love"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:visibility="gone"/>
-
     </android.support.v4.widget.SwipeRefreshLayout>
+
 </RelativeLayout>
