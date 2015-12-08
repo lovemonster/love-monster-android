@@ -12,6 +12,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -31,6 +32,7 @@ public class LoveListActivity extends AppCompatActivity {
 
     private static final Logger logger = new Logger(LoveListActivity.class);
     private boolean searchInProgress = false;
+    private Target userAvatarTarget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +115,44 @@ public class LoveListActivity extends AppCompatActivity {
             }
         });
 
+        return true;
+    }
 
-        setUserProfileIcon(menu.findItem(R.id.menu_love_list_user_avatar), 2);
+    @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        final MenuItem menuItem = menu.findItem(R.id.menu_love_list_user_avatar);
+
+        userAvatarTarget = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                logger.debug("method=onCreateOptionsMenu.loadAvatar handler=onBitmapLoaded");
+                menuItem.setIcon(new BitmapDrawable(bitmap));
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                logger.debug("method=onCreateOptionsMenu.loadAvatar handler=onBitmapFailed ");
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                logger.debug("method=onCreateOptionsMenu.loadAvatar handler=onPrepareLoad");
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                return menuItem.equals(o);
+            }
+
+            @Override
+            public int hashCode() {
+                return menuItem.hashCode();
+            }
+        };
+
+        setUserProfileIcon(menuItem);
         return true;
     }
 
@@ -122,11 +160,9 @@ public class LoveListActivity extends AppCompatActivity {
      * Sets the user profile icon based on the user's avatar.
      *
      * @param menuItem
-     *      the menu item to update
-     * @param remainingRetries
-     *      the number of remaining retries if the avatar fails to load
+     *      the menu item to write the user avatar into
      */
-    private void setUserProfileIcon(final MenuItem menuItem, final int remainingRetries) {
+    private void setUserProfileIcon(final MenuItem menuItem) {
         if (LoveMonsterClient.getInstance().getAuthenticatedUser() == null)
             return;
 
@@ -134,26 +170,7 @@ public class LoveListActivity extends AppCompatActivity {
                 .load(Uri.parse(LoveMonsterClient.getInstance().getAuthenticatedUser().profileImageUrl))
                 .transform(new RoundedRectangleTransformation(10, 1))
                 .resize((int) (menuItem.getIcon().getIntrinsicWidth() * 1.75), (int) (menuItem.getIcon().getIntrinsicHeight() * 1.75))
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        logger.debug("method=onCreateOptionsMenu handler=onBitmapLoaded");
-                        menuItem.setIcon(new BitmapDrawable(bitmap));
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {
-                        logger.debug("method=onCreateOptionsMenu handler=onBitmapFailed remainingRetries=" + remainingRetries);
-                        if (remainingRetries >= 0) {
-                            setUserProfileIcon(menuItem, remainingRetries - 1);
-                        }
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                    }
-                });
+                .into(userAvatarTarget);
     }
 
     @Override
