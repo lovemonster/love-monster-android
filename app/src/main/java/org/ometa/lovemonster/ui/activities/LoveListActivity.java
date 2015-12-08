@@ -47,10 +47,10 @@ public class LoveListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final MakeLoveDialogFragment makeLoveDialogFragment = MakeLoveDialogFragment.newInstance(new User("foo@example.com", ""));
                 makeLoveDialogFragment.setOnSuccessCallback(new MakeLoveDialogFragment.SuccessCallback() {
-                     @Override
-                     public void onSuccess() {
-                         fragment.reloadLoves();
-                     }
+                    @Override
+                    public void onSuccess() {
+                        fragment.reloadLoves();
+                    }
                 });
                 makeLoveDialogFragment.show(getFragmentManager(), "makeLoveDialog");
 
