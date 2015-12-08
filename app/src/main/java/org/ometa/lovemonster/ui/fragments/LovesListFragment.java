@@ -32,7 +32,7 @@ public abstract class LovesListFragment extends Fragment {
 
     // these methods must be implemented from children classes
     protected abstract void onSwipeUp(int page);
-    protected abstract void onSwipeDown();
+    public abstract void reloadLoves();
     protected abstract void initialLoadNoInternet(LoveArrayAdapter lovesArrayAdapter);
     protected abstract void initialLoadWithInternet();
 
@@ -91,7 +91,7 @@ public abstract class LovesListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 if (NetworkHelper.isUp(getActivity())) {
-                    onSwipeDown();
+                    reloadLoves();
 
                 } else {
                     viewHolder.swipeContainer.setRefreshing(false);
@@ -109,7 +109,6 @@ public abstract class LovesListFragment extends Fragment {
             initialLoadNoInternet(lovesArrayAdapter);
         }
     }
-
 
     /**
      *  Toggles whether the no love message is displayed or not.

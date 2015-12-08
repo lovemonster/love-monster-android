@@ -24,7 +24,7 @@ public class HomeLoveFragment extends LovesListFragment {
     }
 
     @Override
-    protected void onSwipeDown() {
+    public void reloadLoves() {
         lovesList.clear();
         client.retrieveRecentLoves(getSwipeDownHandler(), 1);
     }
