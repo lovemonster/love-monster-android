@@ -8,9 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -22,6 +24,8 @@ import org.ometa.lovemonster.service.LoveMonsterClient;
 import org.ometa.lovemonster.ui.fragments.HomeLoveFragment;
 import org.ometa.lovemonster.ui.fragments.MakeLoveDialogFragment;
 import org.ometa.lovemonster.ui.widget.RoundedRectangleTransformation;
+
+import java.util.List;
 
 public class LoveListActivity extends AppCompatActivity {
 
@@ -57,7 +61,49 @@ public class LoveListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_love_list, menu);
-        setUserProfileIcon(menu.getItem(0), 2);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Username...");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(final String query) {
+                logger.debug("Search for " + query);
+                LoveMonsterClient client = LoveMonsterClient.getInstance();
+                client.getUserFromUsername(query, new LoveMonsterClient.UserLookupResponseHandler() {
+                    @Override
+                    public void onUserExists(final User user) {
+                        final Intent intent = new Intent(LoveListActivity.this, UserLoveActivity.class);
+                        intent.putExtra(User.PARCELABLE_KEY, user);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onUserNotFound() {
+                        Toast.makeText(getApplicationContext(), "Cannot find user " + query, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFail(final List<String> errorMessages) {
+                        Toast.makeText(getApplicationContext(), "Network failure", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAuthenticationFailure() {
+                    }
+                });
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+
+        setUserProfileIcon(menu.findItem(R.id.menu_love_list_user_avatar), 2);
         return true;
     }
 
