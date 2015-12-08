@@ -25,7 +25,7 @@ public class UserLoveActivity extends AppCompatActivity {
     private Logger logger;
     private LoveMonsterClient client;
     private LovesPagerAdapter fragmentAdapter;
-    private User user;
+    private User currentUser, user;
     private ViewPager viewPager;
 
     private PagerSlidingTabStrip tabsStrip;
@@ -76,12 +76,25 @@ public class UserLoveActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final MakeLoveDialogFragment makeLoveDialogFragment = MakeLoveDialogFragment.newInstance(user);
+                makeLoveDialogFragment.setOnSuccessCallback(new MakeLoveDialogFragment.SuccessCallback() {
+                    @Override
+                    public void onSuccess() {
+                        /*
+                         * If we're on the user's own view, reload their sent loves.  Otherwise, reload
+                         * the received loves.
+                         */
+                        int tabIndex = (user.equals(currentUser)) ? LovesPagerAdapter.SENT_TAB_INDEX : LovesPagerAdapter.RECEIVED_TAB_INDEX;
+                        UserLoveFragment fragment = (UserLoveFragment) fragmentAdapter.getRegisteredFragment(tabIndex);
+                        fragment.reloadLoves();
+                    }
+                });
                 makeLoveDialogFragment.show(getFragmentManager(), "makeLoveDialog");
             }
         });
     }
 
     private void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
         if (!currentUser.equals(user)) {
             fragmentAdapter.setCurrentUser(currentUser);
         }

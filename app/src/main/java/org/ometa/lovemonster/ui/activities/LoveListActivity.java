@@ -33,7 +33,7 @@ public class LoveListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_love_list);
         LoveMonsterClient client = LoveMonsterClient.getInstance();
 
-        HomeLoveFragment fragment = (HomeLoveFragment) getSupportFragmentManager().findFragmentById(R.id.lovesList);
+        final HomeLoveFragment fragment = (HomeLoveFragment) getSupportFragmentManager().findFragmentById(R.id.lovesList);
         fragment.setCurrentUser(client.getAuthenticatedUser());
 
         final FloatingActionButton makeLoveButton = (FloatingActionButton) findViewById(R.id.make_love);
@@ -41,9 +41,17 @@ public class LoveListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final MakeLoveDialogFragment makeLoveDialogFragment = MakeLoveDialogFragment.newInstance(new User("foo@example.com", ""));
+                makeLoveDialogFragment.setOnSuccessCallback(new MakeLoveDialogFragment.SuccessCallback() {
+                     @Override
+                     public void onSuccess() {
+                         fragment.reloadLoves();
+                     }
+                });
                 makeLoveDialogFragment.show(getFragmentManager(), "makeLoveDialog");
+
             }
         });
+
     }
 
     @Override
@@ -62,6 +70,9 @@ public class LoveListActivity extends AppCompatActivity {
      *      the number of remaining retries if the avatar fails to load
      */
     private void setUserProfileIcon(final MenuItem menuItem, final int remainingRetries) {
+        if (LoveMonsterClient.getInstance().getAuthenticatedUser() == null)
+            return;
+
         Picasso.with(this)
                 .load(Uri.parse(LoveMonsterClient.getInstance().getAuthenticatedUser().profileImageUrl))
                 .transform(new RoundedRectangleTransformation(10, 1))

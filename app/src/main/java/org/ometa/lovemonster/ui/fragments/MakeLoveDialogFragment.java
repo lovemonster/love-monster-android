@@ -32,6 +32,10 @@ import java.util.List;
  */
 public class MakeLoveDialogFragment extends DialogFragment {
 
+    public static abstract class SuccessCallback {
+        public abstract void onSuccess();
+    }
+
     /**
      * Callback used by the cancel action to dismiss the dialog.
      */
@@ -64,6 +68,12 @@ public class MakeLoveDialogFragment extends DialogFragment {
 
         return dialog;
     }
+
+    private SuccessCallback onSuccessCallback;
+    public void setOnSuccessCallback(SuccessCallback callback) {
+        this.onSuccessCallback = callback;
+    }
+    public SuccessCallback getOnSuccessCallback() { return onSuccessCallback; }
 
     @NonNull
     @Override
@@ -109,6 +119,10 @@ public class MakeLoveDialogFragment extends DialogFragment {
                                 );
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
+                                SuccessCallback callback = MakeLoveDialogFragment.this.getOnSuccessCallback();
+                                if (callback != null) {
+                                    callback.onSuccess();
+                                }
                                 materialDialog.dismiss();
                             }
 
