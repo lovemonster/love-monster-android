@@ -75,7 +75,12 @@ public class UserLoveActivity extends AppCompatActivity {
         makeLoveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final MakeLoveDialogFragment makeLoveDialogFragment = MakeLoveDialogFragment.newInstance(user);
+                final MakeLoveDialogFragment makeLoveDialogFragment;
+                if (user.equals(currentUser)) {
+                    makeLoveDialogFragment = MakeLoveDialogFragment.newInstance(new User("foo@example.com", ""));
+                } else {
+                    makeLoveDialogFragment = MakeLoveDialogFragment.newInstance(user);
+                }
                 makeLoveDialogFragment.setOnSuccessCallback(new MakeLoveDialogFragment.SuccessCallback() {
                     @Override
                     public void onSuccess() {
