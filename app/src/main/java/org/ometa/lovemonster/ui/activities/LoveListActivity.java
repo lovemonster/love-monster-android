@@ -70,6 +70,9 @@ public class LoveListActivity extends AppCompatActivity {
      *      the number of remaining retries if the avatar fails to load
      */
     private void setUserProfileIcon(final MenuItem menuItem, final int remainingRetries) {
+        if (LoveMonsterClient.getInstance().getAuthenticatedUser() == null)
+            return;
+
         Picasso.with(this)
                 .load(Uri.parse(LoveMonsterClient.getInstance().getAuthenticatedUser().profileImageUrl))
                 .transform(new RoundedRectangleTransformation(10, 1))
